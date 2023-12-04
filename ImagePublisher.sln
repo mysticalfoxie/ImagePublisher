@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagePublisher", "ImagePublisher\ImagePublisher.csproj", "{943D62B5-AB25-4118-BE81-9C349600B5EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagePublisher.DeviantArt", "ImagePublisher.DeviantArt\ImagePublisher.DeviantArt.csproj", "{16830538-C73B-4BF0-9A41-F45000BFAFD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagePublisher.Core", "ImagePublisher.Core\ImagePublisher.Core.csproj", "{11387FC9-CAF2-401F-BC7E-4240985AC2ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{943D62B5-AB25-4118-BE81-9C349600B5EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{943D62B5-AB25-4118-BE81-9C349600B5EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{943D62B5-AB25-4118-BE81-9C349600B5EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16830538-C73B-4BF0-9A41-F45000BFAFD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16830538-C73B-4BF0-9A41-F45000BFAFD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16830538-C73B-4BF0-9A41-F45000BFAFD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16830538-C73B-4BF0-9A41-F45000BFAFD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11387FC9-CAF2-401F-BC7E-4240985AC2ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11387FC9-CAF2-401F-BC7E-4240985AC2ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11387FC9-CAF2-401F-BC7E-4240985AC2ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11387FC9-CAF2-401F-BC7E-4240985AC2ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
