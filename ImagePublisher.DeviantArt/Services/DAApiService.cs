@@ -1,35 +1,25 @@
 using System.Net.Http.Headers;
 using System.Text;
-using AngleSharp;
+using ImagePublisher.Core.Utils;
 using Newtonsoft.Json;
 
 namespace ImagePublisher.DeviantArt;
 
-public class DeviantArtClient : IDisposable
+public class DAApiService : IDisposable
 {
     private readonly HttpClient _client = new();
 
-    public DeviantArtClient()
+    public DAApiService()
     {
-        CredentialsFile.Load();
-    }
-
-    public async Task OpenDeviantart()
-    {
-        var response = await _client.GetAsync("https://www.deviantart.com");
-        response.EnsureSuccessStatusCode();
-
-        var html = await response.Content.ReadAsStringAsync();
-        var context = BrowsingContext.New(Configuration.Default);
-        using var document = await context.OpenAsync(x => x.Content(html));
-        ;
+        CredentialsService.Load();
     }
 
     public async Task<StashUploadResponse> UploadToStash(FileInfo file)
     {
+        Log.Write("Uploading image to sta.sh storage...");
         using var content = new MultipartFormDataContent();
 
-        var bearer = CredentialsFile.Data.Session.BearerToken;
+        var bearer = CredentialsService.Data.Session.BearerToken;
         content.Add(new StringContent(bearer), "access_token");
 
         await using var stream = new FileStream(file.FullName, FileMode.Open);
@@ -40,15 +30,22 @@ public class DeviantArtClient : IDisposable
         var response = await _client.PostAsync("https://www.deviantart.com/api/v1/oauth2/stash/submit", content);
         response.EnsureSuccessStatusCode();
         
+        Log.Overwrite("Uploading image to sta.sh storage... @gUploaded!");
+        
         var json = await response.Content.ReadAsStringAsync();
-        return JsonConvert.DeserializeObject<StashUploadResponse>(json);
+        var data = JsonConvert.DeserializeObject<StashUploadResponse>(json);
+        
+        Log.Overwrite($"Uploading image to sta.sh storage... @gUploaded! @dItemId: {data.ItemId}");
+
+        return data;
     }
 
     public async Task<PublishResponse> PublishStashItem(PublishRequestData data)
     {
+        Log.Write("Publishing stash item to DeviantArt...");
         using var content = new MultipartFormDataContent();
 
-        var bearer = CredentialsFile.Data.Session.BearerToken;
+        var bearer = CredentialsService.Data.Session.BearerToken;
         content.Add(new StringContent(bearer), "access_token");
         content.Add(new StringContent(data.AgreeTos.ToString()), "agree_tos");
         content.Add(new StringContent(data.AgreeSubmission.ToString()), "agree_submission");
@@ -60,37 +57,51 @@ public class DeviantArtClient : IDisposable
         var response = await _client.PostAsync("https://www.deviantart.com/api/v1/oauth2/stash/publish", content);
         response.EnsureSuccessStatusCode();
         
+        Log.Overwrite("Publishing stash item to DeviantArt... @gPublished!");
+        
         var json = await response.Content.ReadAsStringAsync();
-        return JsonConvert.DeserializeObject<PublishResponse>(json);
+        var publish = JsonConvert.DeserializeObject<PublishResponse>(json);
+        
+        Log.Overwrite($"Publishing stash item to DeviantArt... @gPublished! @d{publish.Url}");
+
+        return publish;
     }
 
     public async Task LoginAsync()
     {
-        if (CanRecoverSession()) return;
+        Log.Write("Logging into DeviantArt...");
+        if (CanRecoverSession())
+        {
+            Log.Overwrite("Logging into DeviantArt... @gSkipped. @dPrevious session recovered.");
+            return;
+        } 
 
         var url = new StringBuilder()
             .Append("https://www.deviantart.com/oauth2/token")
             .Append("?grant_type=authorization_code")
-            .Append($"&client_id={CredentialsFile.Data.ClientId}")
-            .Append($"&client_secret={CredentialsFile.Data.ClientSecret}")
-            .Append($"&code={CredentialsFile.Data.AuthorizationCode}")
-            .Append($"&redirect_uri={CredentialsFile.Data.RedirectUrl}")
+            .Append($"&client_id={CredentialsService.Data.ClientId}")
+            .Append($"&client_secret={CredentialsService.Data.ClientSecret}")
+            .Append($"&code={CredentialsService.Data.AuthorizationCode}")
+            .Append($"&redirect_uri={CredentialsService.Data.RedirectUrl}")
             .ToString();
 
+        Log.Overwrite("Logging into DeviantArt... @dRequest login...");
         var response = await _client.GetAsync(url);
         response.EnsureSuccessStatusCode();
         var json = await response.Content.ReadAsStringAsync();
         var data = JsonConvert.DeserializeObject<LoginResponse>(json);
-        CredentialsFile.UpdateSession(new Session
+        CredentialsService.UpdateSession(new Session
         {
             BearerToken = data.AccessToken,
             ValidUntil = DateTime.Now.AddSeconds(data.ExpiresIn)
         });
+        
+        Log.Overwrite("Logging into DeviantArt... @gLogged in!           ");
     }
 
     public static bool CanRecoverSession()
     {
-        var session = CredentialsFile.Data.Session;
+        var session = CredentialsService.Data.Session;
         if (session is null) return false;
         if (DateTime.Now.AddMinutes(10) >= session.ValidUntil) return false;
         return true;

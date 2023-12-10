@@ -1,9 +1,10 @@
 using CefSharp;
 using CefSharp.WinForms;
+using ImagePublisher.Core.Utils;
 
-namespace ImagePublisher.BrowserEmulator;
+namespace ImagePublisher.Browser.Extensions;
 
-public static class Extensions
+public static class DeviantArtExtensions
 {
     public static void WaitForDeviantArtAuthCookie(this ChromiumWebBrowser browser)
     {
@@ -13,11 +14,20 @@ public static class Extensions
             bool containsCookie;
             do
             {
-                await Task.Delay(5000);
+                for (var i = 5; i >= 0; i--)
+                {
+                    Log.Overwrite($"Ensuring the user is logged in... @rNot logged in! @dWaiting for user to log in. Next check in {i + 1}s...");
+                    await Task.Delay(1000);
+                }
+                
                 // ReSharper disable once AccessToDisposedClosure
                 containsCookie = browser.HasDeviantArtAuthCookie(manager);
+                
             } while (!containsCookie);
         }).Wait();
+        
+        // I know it's a quick and dirty fix, but stfu xD #kiss 
+        Log.Overwrite("Ensuring the user is logged in... @rLogged in!                                                            ");
     }
     
     public static bool HasDeviantArtAuthCookie(this ChromiumWebBrowser browser)

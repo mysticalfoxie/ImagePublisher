@@ -1,6 +1,6 @@
 using CefSharp;
 
-namespace ImagePublisher.BrowserEmulator;
+namespace ImagePublisher.Browser;
 
 public class DeviantArtAuthCookieVisitor : ICookieVisitor
 {

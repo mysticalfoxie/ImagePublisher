@@ -7,11 +7,11 @@
         <Nullable>disable</Nullable>
         <UseWindowsForms>true</UseWindowsForms>
         <ImplicitUsings>enable</ImplicitUsings>
-        <AssemblyName>ImagePublisher.BrowserEmulator</AssemblyName>
         <RootNamespace>ImagePublisher.BrowserEmulator</RootNamespace>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <CefSharpBuildAction>Content</CefSharpBuildAction>
         <SelfContained>false</SelfContained>
+        <PackageId>ImagePublisher.Browser</PackageId>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

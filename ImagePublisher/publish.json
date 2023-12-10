@@ -1,0 +1,9 @@
+{
+  "Image": "C:\\Users\\Miche\\Downloads\\test.png",
+  "DeviantArt": {
+    "Enabled": true,
+    "PublishToStash": true,
+    "Tags": ["Foo", "Bar"],
+    "StashItemId": null
+  }
+}

@@ -1,4 +1,4 @@
-namespace ImagePublisher.BrowserEmulator;
+namespace ImagePublisher.Browser;
 
 public static class Tasks
 {

@@ -1,6 +1,6 @@
 ﻿using CefSharp.WinForms;
 
-namespace ImagePublisher.BrowserEmulator;
+namespace ImagePublisher.Browser;
 
 partial class MainForm
 {

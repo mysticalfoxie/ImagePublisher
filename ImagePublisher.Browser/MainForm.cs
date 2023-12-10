@@ -1,7 +1,7 @@
 using CefSharp;
 using CefSharp.WinForms;
 
-namespace ImagePublisher.BrowserEmulator;
+namespace ImagePublisher.Browser;
 
 public partial class MainForm : Form
 {
@@ -16,8 +16,8 @@ public partial class MainForm : Form
     }
 
     public ChromiumWebBrowser Browser { get; }
-    public Action<string> UrlLoaded { get; set; }
-    public Action InitialLoad { get; set; }
+    public EventHandler<string> UrlLoaded { get; set; }
+    public EventHandler InitialLoad { get; set; }
 
     public void Log(string message)
     {
@@ -35,11 +35,12 @@ public partial class MainForm : Form
         if (_address == Browser.Address) return;
         _address = Browser.Address;
         
-        UrlLoaded?.Invoke(Browser.Address);
+        UrlLoaded?.Invoke(this, Browser.Address);
         
         if (_initialized) return;
         _initialized = true;
 
-        Task.Factory.StartNew(() => InitialLoad?.Invoke());
+        Task.Factory.StartNew(() => 
+            InitialLoad?.Invoke(this, EventArgs.Empty));
     }
 }

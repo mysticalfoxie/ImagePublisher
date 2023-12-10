@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagePublisher.Instagram", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagePublisher.TagHelper", "ImagePublisher.TagHelper\ImagePublisher.TagHelper.csproj", "{2B8BC639-9C0A-4AA1-AF89-9A8F0056C960}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagePublisher.BrowserEmulator", "ImagePublisher.BrowserEmulator\ImagePublisher.BrowserEmulator.csproj", "{C5CD6F62-A856-4960-BB65-CB20ABD6F6D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagePublisher.Browser", "ImagePublisher.Browser\ImagePublisher.Browser.csproj", "{C5CD6F62-A856-4960-BB65-CB20ABD6F6D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

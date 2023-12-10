@@ -2,7 +2,7 @@
 
 namespace ImagePublisher.DeviantArt;
 
-public static class CredentialsFile
+public static class CredentialsService
 {
     public const string FILENAME = "deviantart-credentials.json";
     

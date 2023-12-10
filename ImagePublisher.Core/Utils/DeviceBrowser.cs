@@ -2,9 +2,9 @@ using System.Diagnostics;
 
 namespace ImagePublisher;
 
-public static class WebLink
+public static class DeviceBrowser
 {
-    public static void Open(string url)
+    public static void OpenUrl(string url)
     {
         var info = new ProcessStartInfo(url) { UseShellExecute = true };
         Process.Start(info);

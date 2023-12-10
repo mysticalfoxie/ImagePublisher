@@ -4,15 +4,20 @@
         <OutputType>Exe</OutputType>
         <TargetFramework>net7.0-windows</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+        <Nullable>disable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ImagePublisher.BrowserEmulator\ImagePublisher.BrowserEmulator.csproj" />
       <ProjectReference Include="..\ImagePublisher.Core\ImagePublisher.Core.csproj" />
       <ProjectReference Include="..\ImagePublisher.DeviantArt\ImagePublisher.DeviantArt.csproj" />
       <ProjectReference Include="..\ImagePublisher.Instagram\ImagePublisher.Instagram.csproj" />
       <ProjectReference Include="..\ImagePublisher.TagHelper\ImagePublisher.TagHelper.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="publish.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
