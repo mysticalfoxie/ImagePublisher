@@ -2,17 +2,17 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net7.0-windows</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove=".gitignore" />
-    </ItemGroup>
-
-    <ItemGroup>
+      <ProjectReference Include="..\ImagePublisher.BrowserEmulator\ImagePublisher.BrowserEmulator.csproj" />
       <ProjectReference Include="..\ImagePublisher.Core\ImagePublisher.Core.csproj" />
+      <ProjectReference Include="..\ImagePublisher.DeviantArt\ImagePublisher.DeviantArt.csproj" />
+      <ProjectReference Include="..\ImagePublisher.Instagram\ImagePublisher.Instagram.csproj" />
+      <ProjectReference Include="..\ImagePublisher.TagHelper\ImagePublisher.TagHelper.csproj" />
     </ItemGroup>
 
 </Project>

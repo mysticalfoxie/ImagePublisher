@@ -1,12 +1,12 @@
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace ImagePublisher.DeviantArt;
 
 public class LoginResponse
 {
-    [JsonPropertyName("access_token")]
+    [JsonProperty("access_token")]
     public string AccessToken { get; set; }
     
-    [JsonPropertyName("expires_in")]
+    [JsonProperty("expires_in")]
     public int ExpiresIn { get; set; }
 }

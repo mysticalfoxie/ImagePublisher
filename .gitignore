@@ -20,6 +20,8 @@
 # Mono auto generated files
 mono_crash.*
 
+ImagePublisher.DeviantArt/deviantart-credentials.json
+
 .\.idea
 .idea
 

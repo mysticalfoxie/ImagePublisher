@@ -10,13 +10,4 @@
       <ProjectReference Include="..\ImagePublisher.Core\ImagePublisher.Core.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <None Update="deviantart-credentials.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="deviantart-credentials.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
-
 </Project>

@@ -1,12 +1,17 @@
-﻿namespace ImagePublisher;
+﻿using ImagePublisher.BrowserEmulator;
+
+namespace ImagePublisher;
 
 public class Program
 {
+    [STAThread]
     public static void Main(string[] args)
-    {
-        var filepath = EnsureHasFilepath(args);
-        var image = EnsureImageExists(filepath);
-        Publisher.PublishOnDeviantArt(image);
+    { 
+        Emulator.Main();
+        
+        // var filepath = EnsureHasFilepath(args);
+        // var image = EnsureImageExists(filepath);
+        // await Publisher.PublishOnDeviantArt(image);
     }
 
     private static string EnsureHasFilepath(string[] args)
@@ -29,14 +34,12 @@ public class Program
             return null;
         }
 
-        if (fileInfo.Extension.ToLower() != ".png")
-        {
-            SendError("The provided file is not a png image.");
-            Environment.Exit(-1);
-            return null;
-        }
-
-        return fileInfo;
+        if (fileInfo.Extension.ToLower() == ".png") 
+            return fileInfo;
+        
+        SendError("The provided file is not a png image.");
+        Environment.Exit(-1);
+        return null;
     }
 
     private static void SendError(string message)
