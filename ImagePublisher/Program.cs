@@ -13,8 +13,6 @@ public static class Program
     [STAThread]
     public static void Main(string[] args)
     { 
-        new BrowserEmulator().Start();
-
         Log.Write("Seaching source image...");
         _config = LoadPublishConfig();
         Log.Overwrite("Seaching source image... @gLoaded!");

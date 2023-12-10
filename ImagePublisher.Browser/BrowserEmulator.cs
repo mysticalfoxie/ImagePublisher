@@ -30,6 +30,7 @@ public class BrowserEmulator : IDisposable, IBrowserEmulator
         var settings = new CefSettings();
         var localDataFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         var cachePath = Path.Combine(localDataFolderPath, "ImagePublisher");
+        settings.LogSeverity = LogSeverity.Error;
         settings.CachePath = cachePath;
         settings.PersistSessionCookies = true;
         settings.PersistUserPreferences = true;

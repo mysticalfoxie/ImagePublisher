@@ -25,15 +25,20 @@ public class DAWebPageService : IDisposable
         Log.Overwrite("Starting emulated browser... @gStarted!");
     }
     
-    public async Task AddTagsToPost(PublishContext tags)
+    public async Task AddTagsToPost(PublishContext context)
     {
         EnsureLoggedIn();
-        VisitEditDeviationPage();
+        VisitEditDeviationPage(context);
+        // EnterTagsToTextField();
+        // PressSubmitButton();
     }
 
-    private void VisitEditDeviationPage()
+    private void VisitEditDeviationPage(PublishContext context)
     {
-        // https://www.deviantart.com/deviation/edit/1000122562
+        Log.Write("Navigate to edit page for deviation...");
+        _browser.LoadUrl($"https://www.deviantart.com/deviation/edit/{context.DeviationId}");
+        _browser.WaitForNavigationAsync();
+        Log.Write("Navigate to edit page for deviation... @gNavigated!");
     }
 
     private void EnsureLoggedIn()
@@ -51,14 +56,6 @@ public class DAWebPageService : IDisposable
         Log.Overwrite("Ensuring the user is logged in... @rNot logged in! @dWaiting for user to log in.");
         
         _window.Browser.WaitForDeviantArtAuthCookie();
-    }
-
-    private object ParseLocation(string address)
-    {
-        // if (address is null) throw new ArgumentNullException(nameof(address));
-        // if (address.StartsWith("https://www.deviantart.com/users/login")) return Location.LoginPage;
-        // if (address.StartsWith("https://www.deviantart.com")) return Location.HomePage;
-        // throw new Exception("Could not determine on which page the browser is navigated.");
     }
 
     public void Dispose()
