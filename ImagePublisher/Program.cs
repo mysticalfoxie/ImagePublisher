@@ -1,6 +1,7 @@
 ﻿using ImagePublisher.Browser;
 using ImagePublisher.Core.Models;
 using ImagePublisher.Core.Utils;
+using ImagePublisher.DeviantArt;
 using ImagePublisher.Models;
 using Newtonsoft.Json;
 
@@ -12,13 +13,13 @@ public static class Program
     
     [STAThread]
     public static void Main(string[] args)
-    { 
-        Log.Write("Seaching source image...");
+    {
+        Log.Write("Loading publish file...");
         _config = LoadPublishConfig();
-        Log.Overwrite("Seaching source image... @gLoaded!");
+        Log.Overwrite("Loading publish file... @gLoaded!");
         
         Log.Write("Seaching source image...");
-        var filepath = EnsureHasFilepath(args);
+        var filepath = EnsureHasFilepath();
         var image = EnsureImageExists(filepath);
         var context = new PublishContext(image, _config);
         Log.Overwrite($"Seaching source image...@g Found@d at '{image.FullName}'");
@@ -33,7 +34,7 @@ public static class Program
     {
         Log.Write(" @d--- Publish: DeviantArt ---");
 
-        var publisher = new DeviantArt.Publisher();
+        var publisher = new Publisher();
         publisher.Publish(context).Wait();
     }
 
@@ -43,11 +44,11 @@ public static class Program
         return JsonConvert.DeserializeObject<PublishConfig>(json);
     }
 
-    private static string EnsureHasFilepath(string[] args)
+    private static string EnsureHasFilepath()
     {
-        if (args.Length > 0) 
-            return args[0];
-        
+        if (!string.IsNullOrWhiteSpace(_config.Image))
+            return _config.Image;
+
         Log.Overwrite("Seaching source image... @rFailed!");
         SendError("The launch arguments do not contain an image location.");
         Environment.Exit(-1);

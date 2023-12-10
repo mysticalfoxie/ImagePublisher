@@ -23,7 +23,6 @@
       <ProjectReference Include="..\ImagePublisher.Core\ImagePublisher.Core.csproj" />
       <ProjectReference Include="..\ImagePublisher.DeviantArt\ImagePublisher.DeviantArt.csproj" />
       <ProjectReference Include="..\ImagePublisher.Instagram\ImagePublisher.Instagram.csproj" />
-      <ProjectReference Include="..\ImagePublisher.TagHelper\ImagePublisher.TagHelper.csproj" />
     </ItemGroup>
 
     <ItemGroup>

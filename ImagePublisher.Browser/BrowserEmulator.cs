@@ -14,12 +14,16 @@ public interface IBrowserEmulator
 public class BrowserEmulator : IDisposable, IBrowserEmulator
 {
     public MainForm Window { get; private set; }
-    public ChromiumWebBrowser Browser => Window.Browser;
+    public ChromiumWebBrowser Browser => Window?.Browser;
     public bool ShowDevToolsOnStartup { get; set; }
+
+    public BrowserEmulator()
+    {
+        Initialize();
+    }
     
     public void Start()
     {
-        Initialize();
         Window.Browser.LoadUrl("about:version");
         Application.Run(Window);
     }

@@ -8,8 +8,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagePublisher.Core", "Imag
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagePublisher.Instagram", "ImagePublisher.Instagram\ImagePublisher.Instagram.csproj", "{B4FC6A01-C199-4366-A3DC-4F739F37E673}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagePublisher.TagHelper", "ImagePublisher.TagHelper\ImagePublisher.TagHelper.csproj", "{2B8BC639-9C0A-4AA1-AF89-9A8F0056C960}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagePublisher.Browser", "ImagePublisher.Browser\ImagePublisher.Browser.csproj", "{C5CD6F62-A856-4960-BB65-CB20ABD6F6D5}"
 EndProject
 Global
@@ -34,10 +32,6 @@ Global
 		{B4FC6A01-C199-4366-A3DC-4F739F37E673}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4FC6A01-C199-4366-A3DC-4F739F37E673}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4FC6A01-C199-4366-A3DC-4F739F37E673}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2B8BC639-9C0A-4AA1-AF89-9A8F0056C960}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2B8BC639-9C0A-4AA1-AF89-9A8F0056C960}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2B8BC639-9C0A-4AA1-AF89-9A8F0056C960}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2B8BC639-9C0A-4AA1-AF89-9A8F0056C960}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C5CD6F62-A856-4960-BB65-CB20ABD6F6D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C5CD6F62-A856-4960-BB65-CB20ABD6F6D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5CD6F62-A856-4960-BB65-CB20ABD6F6D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
