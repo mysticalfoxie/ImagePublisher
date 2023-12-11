@@ -2,10 +2,10 @@ namespace ImagePublisher.DeviantArt;
 
 public class PublishRequestData
 {
-    public bool IsMatureContent { get; set; }
-    public bool AgreeTos { get; set; }
-    public bool AgreeSubmission { get; set; }
-    public bool AllowComments { get; set; }
-    public bool AllowFreeDownload { get; set; }
-    public long ItemId { get; set; }
+    public bool IsMatureContent { get; init; }
+    public bool AgreeTos { get; init; }
+    public bool AgreeSubmission { get; init; }
+    public bool AllowComments { get; init; }
+    public bool AllowFreeDownload { get; init; }
+    public long ItemId { get; init; }
 }

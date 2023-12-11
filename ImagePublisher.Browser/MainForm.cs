@@ -6,6 +6,7 @@ namespace ImagePublisher.Browser;
 public partial class MainForm : Form
 {
     private bool _initialized;
+    private bool _devToolsOpen;
     private string _address;
 
     public MainForm()
@@ -42,5 +43,22 @@ public partial class MainForm : Form
 
         Task.Factory.StartNew(() => 
             InitialLoad?.Invoke(this, EventArgs.Empty));
+    }
+    
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        SwitchDevTools(e);
+        base.OnKeyDown(e);
+    }
+
+    private void SwitchDevTools(KeyEventArgs e)
+    {
+        if (e.KeyCode != Keys.F12) return;
+        
+        _devToolsOpen = !_devToolsOpen;
+        if (_devToolsOpen)
+            Browser.ShowDevTools();
+        else
+            Browser.CloseDevTools();
     }
 }

@@ -35,4 +35,8 @@
       <PackageReference Include="CefSharp.WinForms.NETCore" Version="119.4.30" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\ImagePublisher.Core\ImagePublisher.Core.csproj" />
+    </ItemGroup>
+
 </Project>

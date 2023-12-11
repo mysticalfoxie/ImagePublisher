@@ -9,26 +9,36 @@ public class Publisher : IPublisher
     public async Task Publish(PublishContext context)
     {
         await PublishImage(context);
-        await AddTagsToPost(context);
-        // Browser.Open($"https://www.deviantart.com/deviation/edit/{publish.DeviationId}");
+        AddTagsToPost(context);
     }
 
     public static async Task PublishImage(PublishContext context)
     {
-        Log.Write("[Started: Upload image to DeviantArt via API]");
+        if (context.Config.DeviantArt.SkipStashUpload.GetValueOrDefault() &&
+            context.Config.DeviantArt.SkipPublish.GetValueOrDefault() &&
+            context.Config.DeviantArt.AddTags.GetValueOrDefault())
+        {
+            if (string.IsNullOrWhiteSpace(context.Config.DeviantArt.DeviationId))
+                throw new InvalidOperationException("Cannot skip the DeviantArt image publish when there is no DeviationId.");
+            
+            Log.Write("Publishing image to DeviantArt via API... @dSkipped!");
+            return;
+        }
+
+        Log.Write("[Started: Publishing image to DeviantArt via API]");
         using var client = new DAApiService();
         await client.LoginAsync();
-        var stash = await client.UploadToStash(context.Image);
+        var stash = await client.UploadToStash(context);
         var opts = GetPublishRequestDataForItem(stash.ItemId);
-        var publish = await client.PublishStashItem(opts);
-        context.DeviationUrl = publish.Url;
-        context.DeviationId = publish.DeviationId;
-        Log.Write("[@gCompleted@r: Upload image to DeviantArt via API]");
+        await client.PublishStashItem(context, opts);
+        Log.Write("[@gCompleted@r: Publishing image to DeviantArt via API]");
     }
 
-    public static async Task AddTagsToPost(PublishContext context)
+    public static void AddTagsToPost(PublishContext context)
     {
-        if (context.Config.DeviantArt.Tags is null)
+        if (!context.Config.DeviantArt.AddTags.HasValue ||
+            context.Config.DeviantArt.AddTags.Value == false ||
+            string.IsNullOrWhiteSpace(context.Config.DeviantArt.Tags))
         {
             Log.Write("Adding tags to deviation... @dSkipped.");
             return;
@@ -36,7 +46,7 @@ public class Publisher : IPublisher
 
         Log.Write("[Started: Adding tags to deviation]");
         using var service = new DAWebPageService(context);
-        await service.AddTagsToPost(context);
+        service.AddTagsToPost();
         Log.Write("[@gCompleted@r: Adding tags to deviation]");
     }
 

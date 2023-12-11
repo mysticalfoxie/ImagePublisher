@@ -12,7 +12,7 @@ public static class Program
     private static PublishConfig _config; 
     
     [STAThread]
-    public static void Main(string[] args)
+    public static void Main()
     {
         Log.Write("Loading publish file...");
         _config = LoadPublishConfig();

@@ -4,7 +4,7 @@ using ImagePublisher.Core.Utils;
 
 namespace ImagePublisher.Browser.Extensions;
 
-public static class DeviantArtExtensions
+public static class Extensions
 {
     public static void WaitForDeviantArtAuthCookie(this ChromiumWebBrowser browser)
     {
@@ -50,5 +50,15 @@ public static class DeviantArtExtensions
         tcs.Task.Wait();
         
         return tcs.Task.Result;
+    }
+
+    public static void EnterChar(this IBrowserHost host, char key)
+    {
+        host.SendKeyEvent(new KeyEvent()
+        {
+            Type = KeyEventType.Char,
+            WindowsKeyCode = key,
+            NativeKeyCode = key
+        });
     }
 }

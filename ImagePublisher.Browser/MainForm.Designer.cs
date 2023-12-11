@@ -42,7 +42,7 @@ partial class MainForm
         // 
         AutoScaleDimensions = new SizeF(7F, 15F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(917, 479);
+        ClientSize = new Size(1600, 900);
         Controls.Add(_browser);
         Controls.Add(_wrapper);
         Name = "MainForm";

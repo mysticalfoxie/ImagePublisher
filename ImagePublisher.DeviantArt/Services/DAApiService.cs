@@ -1,5 +1,8 @@
+using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.RegularExpressions;
+using ImagePublisher.Core.Models;
 using ImagePublisher.Core.Utils;
 using Newtonsoft.Json;
 
@@ -14,18 +17,31 @@ public class DAApiService : IDisposable
         CredentialsService.Load();
     }
 
-    public async Task<StashUploadResponse> UploadToStash(FileInfo file)
+    public async Task<StashUploadResponse> UploadToStash(PublishContext context)
     {
         Log.Write("Uploading image to sta.sh storage...");
-        using var content = new MultipartFormDataContent();
 
+        if (context.Config.DeviantArt.SkipStashUpload.GetValueOrDefault())
+        {
+            if (context.Config.DeviantArt.StashId.GetValueOrDefault() == default)
+                throw new InvalidOperationException("The publish config requests to skip the stash upload but does not provide a StashId.");
+            Debug.Assert(context.Config.DeviantArt.StashId != null, "context.Config.DeviantArt.StashId != null");
+            
+            Log.Write("Uploading image to sta.sh storage... @dSkipped.");
+            return new StashUploadResponse
+            {
+                ItemId = context.Config.DeviantArt.StashId.Value
+            };
+        }
+
+        using var content = new MultipartFormDataContent();
         var bearer = CredentialsService.Data.Session.BearerToken;
         content.Add(new StringContent(bearer), "access_token");
 
-        await using var stream = new FileStream(file.FullName, FileMode.Open);
+        await using var stream = new FileStream(context.Image.FullName, FileMode.Open);
         var imageContent = new StreamContent(stream);
         imageContent.Headers.ContentType = new MediaTypeHeaderValue("image/png");
-        content.Add(imageContent, "file", file.Name);
+        content.Add(imageContent, "image", context.Image.Name);
 
         var response = await _client.PostAsync("https://www.deviantart.com/api/v1/oauth2/stash/submit", content);
         response.EnsureSuccessStatusCode();
@@ -40,11 +56,24 @@ public class DAApiService : IDisposable
         return data;
     }
 
-    public async Task<PublishResponse> PublishStashItem(PublishRequestData data)
+    public async Task<PublishResponse> PublishStashItem(PublishContext context, PublishRequestData data)
     {
         Log.Write("Publishing stash item to DeviantArt...");
-        using var content = new MultipartFormDataContent();
+        
+        if (context.Config.DeviantArt.SkipPublish.GetValueOrDefault())
+        {
+            if (string.IsNullOrWhiteSpace(context.Config.DeviantArt.DeviationId))
+                throw new InvalidOperationException("The publish config requests to skip the stash upload but does not provide a StashId.");
 
+            Log.Write("Publishing stash item to DeviantArt... @dSkipped.");
+            return new PublishResponse
+            {
+                DeviationId = context.Config.DeviantArt.DeviationId,
+                Url = $"https://www.deviantart.com/naughtyfoxie/art/{context.Config.DeviantArt.DeviationId}"
+            };
+        }
+
+        using var content = new MultipartFormDataContent();
         var bearer = CredentialsService.Data.Session.BearerToken;
         content.Add(new StringContent(bearer), "access_token");
         content.Add(new StringContent(data.AgreeTos.ToString()), "agree_tos");
@@ -64,6 +93,10 @@ public class DAApiService : IDisposable
         
         Log.Overwrite($"Publishing stash item to DeviantArt... @gPublished! @d{publish.Url}");
 
+        var regex = new Regex(@"https://www.deviantart.com/[\d\w]*/art/.*-(\d*)");
+        context.DeviationId = regex.Match(publish.Url).Groups[1].Value;
+        context.DeviationUrl = publish.Url;
+        
         return publish;
     }
 

@@ -1,9 +1,20 @@
 {
-  "Image": "C:\\Users\\Miche\\Downloads\\test.png",
+  "Image": "C:\\Users\\Miche\\Downloads\\Fluffy.png",
   "DeviantArt": {
     "Enabled": true,
-    "PublishToStash": true,
-    "Tags": ["Foo", "Bar"],
-    "StashItemId": null
+    
+    "AddTags": true,
+    "Tags": "CuteFoxie Foxie Fluffy Sweet Fox",
+    
+    "AddLocation": true,
+    "Location": "Out in the nowhere",
+    
+    "AddCharacter": true,
+    "Character": "Fluffy",
+    
+    "SkipPublish": false,
+    "SkipStashUpload": false,
+
+    "LaunchBrowserAfterEdit": true
   }
 }
