@@ -21,6 +21,7 @@
 mono_crash.*
 
 ImagePublisher.DeviantArt/deviantart-credentials.json
+ImagePublisher.Web.Host/wwwroot/*
 
 .\.idea
 .idea
