@@ -47,7 +47,7 @@ public class DAWebPageService : IDisposable
         if (!_context.Config.DeviantArt.LaunchBrowserAfterEdit.GetValueOrDefault()) return;
         
         Log.Write("Starting default browser at address...");
-            DeviceBrowser.OpenUrl(_browser.Address);
+        DeviceBrowser.OpenUrl(_browser.Address);
         Log.Overwrite($"Starting default browser at address... @gOpened! @d{_browser.Address}");
     }
 

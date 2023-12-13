@@ -4,19 +4,12 @@ using ImagePublisher.Core.Utils;
 
 namespace ImagePublisher.Browser;
 
-public interface IBrowserEmulator
-{
-    public MainForm Window { get; }
-    public ChromiumWebBrowser Browser { get; }
-    public bool ShowDevToolsOnStartup { get; set; }
-    public void Start();
-}
-
-public class BrowserEmulator : IDisposable, IBrowserEmulator
+public class BrowserEmulator : IDisposable
 {
     public MainForm Window { get; private set; }
     public ChromiumWebBrowser Browser => Window?.Browser;
     public bool ShowDevToolsOnStartup { get; set; }
+    private Action _exitHandler;
 
     public BrowserEmulator()
     {
@@ -29,11 +22,13 @@ public class BrowserEmulator : IDisposable, IBrowserEmulator
         {
             Browser.LoadUrl("about:blank");
             Application.Run(Window);
+            _exitHandler = Application.Exit;
         }).GetAwaiter();
 
         // ReSharper disable once RedundantJumpStatement
         while (!Browser.IsBrowserInitialized) continue;
         Application.ThreadException += (_, args) => Log.Write("@rThreadException: " + args.Exception.Message);
+        Application.ApplicationExit += (_, args) => _exitHandler();
     }
 
     public void Navigate(string url)
@@ -87,7 +82,7 @@ public class BrowserEmulator : IDisposable, IBrowserEmulator
 
     public void Dispose()
     {
-        Application.Exit();
+        _exitHandler();
         Window?.Browser?.Dispose();
         Window?.Dispose();
         GC.SuppressFinalize(this);
