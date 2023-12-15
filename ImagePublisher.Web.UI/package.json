@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build && xcopy /E /I \"dist\\imagepublisher\\*\" \"..\\ImagePublisher.Web.Host\\wwwroot\"",
+    "build": "ng build && rmdir /s /q \"..\\ImagePublisher.Web.Host\\wwwroot\" && xcopy /E /I \"dist\\imagepublisher\\*\" \"..\\ImagePublisher.Web.Host\\wwwroot\"",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
