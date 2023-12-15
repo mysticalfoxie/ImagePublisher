@@ -53,7 +53,7 @@ public class StaticRootFilesMiddleware : IMiddleware
         byte[] data = null;
         if (!RootFiles.ContainsKey(file.Name))
         {
-            data = await File.ReadAllBytesAsync("wwwroot/index.html");
+            data = await File.ReadAllBytesAsync(file.FullName);
 
             var retries = 0;
             while (!RootFiles.TryAdd(file.Name, data) && ++retries < 3)
