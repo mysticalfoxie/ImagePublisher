@@ -4,7 +4,7 @@
     "Start Kestrel Server": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "applicationUrl": "http://*:5032"
+      "applicationUrl": "http://*:5000"
     }
   }
 }
