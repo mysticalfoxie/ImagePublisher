@@ -6,8 +6,8 @@ export const AppRoutes: Routes = [
         loadChildren: () => import('./pages/presets/presets.module').then(x => x.PresetsModule)
     },
     {
-        path: 'publish',
-        loadChildren: () => import('./pages/publish/publish.module').then(x => x.PublishModule)
+        path: 'upload',
+        loadChildren: () => import('./pages/upload/upload.module').then(x => x.UploadModule)
     },
     {
         path: 'settings',

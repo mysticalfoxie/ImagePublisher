@@ -3,7 +3,6 @@
 
 :host {
     display: flex;
-    gap: 32px;
     height: 100vh;
 
     div.sidebar {
@@ -28,7 +27,7 @@
             >div.logo {
                 width: 36px;
                 height: 40px;
-                border-radius: 50%;
+                border-radius: 8px;
                 background-color: var(--primary);
                 font-family: "Gloria Hallelujah", sans-serif;
                 font-size: 20px;
@@ -44,36 +43,43 @@
         }
 
         div.items {
+            flex: 1;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
 
             > div {
                 display: flex;
-                align-items: center;
-                gap: 16px;
-                padding: 16px 32px;
-                margin: 6px 12px;
-                border-radius: 8px;
-            }
+                flex-direction: column;
 
-            > div.active {
-                background-color: var(--primary);
-            }
+                > div {
+                    display: flex;
+                    align-items: center;
+                    gap: 16px;
+                    padding: 16px 32px;
+                    margin: 6px 12px;
+                    border-radius: 8px;
+                }
 
-            > mat-divider {
-                width: 85%;
-                margin: 12px;
-                align-self: center;
-            }
+                > div.active {
+                    background-color: var(--primary);
+                }
 
-            > div:hover {
-                cursor: pointer;
-                background-color: #353535;
-            }
+                > mat-divider {
+                    width: 85%;
+                    margin: 12px;
+                    align-self: center;
+                }
 
-            > div.active:hover {
-                cursor: pointer;
-                background-color: lighten(map.get($primary, 500), 10);
+                > div:hover {
+                    cursor: pointer;
+                    background-color: #353535;
+                }
+
+                > div.active:hover {
+                    cursor: pointer;
+                    background-color: lighten(map.get($primary, 500), 10);
+                }
             }
         }
 
@@ -94,7 +100,7 @@
         flex: 1;
 
         div.page {
-            margin-top: 26px;
+            margin: 26px 32px;
         }
     }
 }

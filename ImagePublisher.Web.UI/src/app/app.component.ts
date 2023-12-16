@@ -20,7 +20,5 @@ export class AppComponent {
                 map(x => new RegExp("^\\/(\\w+)").exec(x as string)?.[1]),
                 filter(x => !!x))
             .subscribe(x => this.path$.next(x as string));
-
-        this.path$.subscribe(console.log)
     }
 }

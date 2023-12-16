@@ -5,24 +5,29 @@
     </header>
 
     <div class="items">
-        <div
-            [class.active]="(path$ | async) == 'presets'"
-            [routerLink]="'presets'">
-            <mat-icon>widgets</mat-icon>
-            Presets
+        <div class="top">
+            <div
+                [class.active]="(path$ | async) == 'presets'"
+                [routerLink]="'presets'">
+                <mat-icon>widgets</mat-icon>
+                Presets
+            </div>
+            <div
+                [class.active]="(path$ | async) == 'upload'"
+                [routerLink]="'upload'">
+                <mat-icon>upload</mat-icon>
+                Upload
+            </div>
         </div>
-        <div
-            [class.active]="(path$ | async) == 'publish'"
-            [routerLink]="'publish'">
-            <mat-icon>share</mat-icon>
-            Publish
-        </div>
-        <mat-divider></mat-divider>
-        <div
-            [class.active]="(path$ | async) == 'settings'"
-            [routerLink]="'settings'">
-            <mat-icon>settings</mat-icon>
-            Settings
+
+        <div class="bottom">
+            <mat-divider></mat-divider>
+            <div
+                [class.active]="(path$ | async) == 'settings'"
+                [routerLink]="'settings'">
+                <mat-icon>settings</mat-icon>
+                Settings
+            </div>
         </div>
     </div>
 

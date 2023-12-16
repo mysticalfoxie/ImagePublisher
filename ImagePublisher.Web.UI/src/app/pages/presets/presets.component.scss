@@ -1,0 +1,59 @@
+app-presets-component {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    > div {
+        background-color: #303030;
+        border-radius: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 12px 6px 24px;
+    }
+
+    > table {
+        background: none !important;
+
+        img {
+            object-fit: cover;
+            border-radius: 4px;
+            box-shadow: 2px 2px 8px 2px #202020;
+        }
+
+        thead >tr >th {
+            background-color: #404040 !important;
+            font-family: Rowdies, sans-serif;
+            font-size: 16px;
+
+            &.mat-column-image { border-top-left-radius: 16px; }
+            &.mat-column-actions { border-top-right-radius: 16px; text-align: right; padding-right: 100px; }
+        }
+
+        tbody >tr {
+            background-color: #252525 !important;
+            > td { padding: 8px 16px !important; }
+        }
+
+        td.mat-column-image,
+        td.mat-column-title,
+        td.mat-column-timestamp {
+            width: 0;
+            white-space: nowrap;
+        }
+
+        td.mat-column-description {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 400px;
+        }
+
+        td.mat-column-actions >div {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+    }
+
+}
