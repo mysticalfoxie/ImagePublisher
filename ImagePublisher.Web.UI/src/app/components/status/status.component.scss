@@ -1,0 +1,20 @@
+app-status {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+
+    div.status {
+        border-radius: 50%;
+        width: 12px;
+        height: 12px;
+        background-color: hsl(0, 60, 50);
+
+        &.true {
+            background-color: hsl(120, 60, 50);
+        }
+    }
+
+    div.content {
+
+    }
+}
