@@ -1,4 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Gloria+Hallelujah&family=Indie+Flower&display=swap');
+
 html, body {
     padding: 0;
     margin: 0;
@@ -9,4 +11,8 @@ html, body {
     color: #EEEEEE;
     font-size: 16px;
     font-family: Sergio UI, sans-serif;
+}
+
+:root {
+    --primary: hsl(340, 60%, 50%);
 }

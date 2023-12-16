@@ -1,80 +1,60 @@
 :host {
     display: flex;
+    gap: 32px;
     height: 100vh;
-    flex-direction: column;
 
-    header {
+    div.sidebar {
+        width: 300px;
+        background-color: #252525;
+        border-right: 1px solid #101010;
+        box-shadow: 2px 0 10px 2px #101010;
         display: flex;
-        height: 72px;
-        justify-content: space-between;
-        align-items: stretch;
-        background-color: #303030;
-        z-index: 1;
+        flex-direction: column;
+        justify-items: center;
 
-        >div.left {
-            width: 300px;
-        }
-
-        >div.right {
-            flex: 1;
-            justify-content: flex-end;
-            box-shadow: 5px 4px 4px #151515;
-            border-bottom: 1px solid #101010;
-        }
-
-        > div {
+        header {
             display: flex;
+            height: 72px;
+            padding: 0 32px;
             align-items: center;
+            background-color: #353535;
 
+            >div.logo {
+                width: 40px;
+                height: 40px;
+                background-color: var(--primary);
+            }
+        }
+
+        div.items {
             > div {
-                padding: 12px 32px;
+                padding: 16px 32px;
+            }
+
+            > div:hover {
+                cursor: pointer;
+                background-color: #353535;
+            }
+        }
+
+        footer {
+            padding: 12px;
+            align-self: center;
+            margin-top: auto;
+
+            span {
+                font-size: 14px;
+                font-style: italic;
+                color: #BBBBBB;
             }
         }
     }
 
-    div.body {
-        display: flex;
+    div.content {
         flex: 1;
 
-        div.sidebar {
-            width: 300px;
-            background-color: #252525;
-            border-right: 1px solid #101010;
-            box-shadow: 2px 0 10px 2px #101010;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            justify-items: center;
-
-            div.items {
-                > div {
-                    padding: 16px 32px;
-                }
-
-                > div:hover {
-                    cursor: pointer;
-                    background-color: #353535;
-                }
-            }
-
-            footer {
-                padding: 12px;
-                align-self: center;
-
-                span {
-                    font-size: 14px;
-                    font-style: italic;
-                    color: #BBBBBB;
-                }
-            }
-        }
-
-        div.content {
-
-
-            div.page {
-
-            }
+        div.page {
+            margin-top: 26px;
         }
     }
 }

@@ -1,30 +1,22 @@
-<header>
-    <div class="left">
-        <div>
-            <h1>Image Publisher</h1>
-        </div>
-    </div>
-    <div class="right">
-        <div>
-            <app-status [status]="false">DISCONNECTED</app-status>
-        </div>
-    </div>
-</header>
-<div class="body">
-    <div class="sidebar">
-        <div class="items">
-            <div>Presets</div>
-            <div>Publish</div>
-            <div>Settings</div>
-        </div>
+<div class="sidebar">
+    <header>
+        <div class="logo">IP</div>
+        <h1>Image Publisher</h1>
+    </header>
 
-        <footer>
-            <span>© Michelle Becker 2023</span>
-        </footer>
+    <div class="items">
+        <div [routerLink]="'presets'">Presets</div>
+        <div [routerLink]="'publish'">Publish</div>
+        <div [routerLink]="'settings'">Settings</div>
     </div>
-    <div class="content">
-        <div class="page">
-            <router-outlet></router-outlet>
-        </div>
+
+    <footer>
+        <span>© Michelle Becker 2023</span>
+    </footer>
+</div>
+
+<div class="content">
+    <div class="page">
+        <router-outlet></router-outlet>
     </div>
 </div>
