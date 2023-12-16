@@ -5,9 +5,25 @@
     </header>
 
     <div class="items">
-        <div [routerLink]="'presets'">Presets</div>
-        <div [routerLink]="'publish'">Publish</div>
-        <div [routerLink]="'settings'">Settings</div>
+        <div
+            [class.active]="(path$ | async) == 'presets'"
+            [routerLink]="'presets'">
+            <mat-icon>widgets</mat-icon>
+            Presets
+        </div>
+        <div
+            [class.active]="(path$ | async) == 'publish'"
+            [routerLink]="'publish'">
+            <mat-icon>share</mat-icon>
+            Publish
+        </div>
+        <mat-divider></mat-divider>
+        <div
+            [class.active]="(path$ | async) == 'settings'"
+            [routerLink]="'settings'">
+            <mat-icon>settings</mat-icon>
+            Settings
+        </div>
     </div>
 
     <footer>

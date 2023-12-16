@@ -1,18 +1,43 @@
-/* You can add global styles to this file, and also import other style files */
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Gloria+Hallelujah&family=Indie+Flower&display=swap');
+@use '@angular/material' as mat;
+@use 'sass:map';
+
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Dosis:wght@400&family=Material+Icons&family=Gloria+Hallelujah&family=Indie+Flower&family=Rowdies:wght@300&display=swap');
+
+@include mat.core();
+$app-primary-palette: mat.define-palette(mat.$pink-palette);
+$app-accent-palette: mat.define-palette(mat.$indigo-palette);
+$app-warn-palette: mat.define-palette(mat.$red-palette);
+$app-theme: mat.define-dark-theme((
+    color: (
+        primary: $app-primary-palette,
+        accent: $app-accent-palette,
+        warn: $app-warn-palette
+    ),
+    density: 0
+));
+
+$app-colors: mat.get-color-config($app-theme);
+$primary: map.get($app-colors, 'primary');
+$accent: map.get($app-colors, 'accent');
+$warn: map.get($app-colors, 'warn');
+
+@include mat.all-component-themes($app-theme);
 
 html, body {
     padding: 0;
     margin: 0;
-    background-color: #202020;
+    color: #EEEEEE;
+    font-size: 18px;
+    font-family: Dosis, Sergio UI, sans-serif;
+    background-color: #0F0F0F;
 }
 
-* {
-    color: #EEEEEE;
-    font-size: 16px;
-    font-family: Sergio UI, sans-serif;
+h1, h2, h3, h4, h5, h6, span.heading, span.title {
+    font-family: Rowdies, Sergio UI, sans-serif;
 }
 
 :root {
-    --primary: hsl(340, 60%, 50%);
+    --primary: #{mat.get-color-from-palette($primary, 500)};
+    --accent: #{mat.get-color-from-palette($accent, 500)};
+    --warn: #{mat.get-color-from-palette($warn, 500)};
 }
