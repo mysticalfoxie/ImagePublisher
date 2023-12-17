@@ -1,10 +1,23 @@
 <div class="header">
-    <h1>{{ title }}</h1>
+    <h3>{{ title }}</h3>
 </div>
-<div class="content">
-    <p>{{ description }}</p>
-</div>
-<div class="actions">
-    <button mat-raised-button [mat-dialog-close]="true">Confirm</button>
-    <button mat-raised-button [mat-dialog-close]="false">Cancel</button>
+<div class="body">
+    <div class="content">
+        <span>{{ description }}</span>
+        <ng-content></ng-content>
+    </div>
+
+    <div class="actions">
+        <button
+            mat-raised-button
+            color="primary"
+            [mat-dialog-close]="true">
+            Confirm
+        </button>
+        <button
+            mat-raised-button
+            [mat-dialog-close]="false">
+            Cancel
+        </button>
+    </div>
 </div>

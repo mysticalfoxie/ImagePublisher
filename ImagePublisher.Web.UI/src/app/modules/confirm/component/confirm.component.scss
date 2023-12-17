@@ -1,0 +1,51 @@
+div.cdk-overlay-container div.app-confirm-dialog {
+    mat-dialog-container >div >div {
+        border-radius: 16px;
+        overflow-y: hidden;
+        min-width: 400px;
+        min-height: 200px;
+        background-color: #202020;
+        position: relative;
+    }
+
+    app-confirm-component {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        div.header {
+            background-color: #404040;
+            border-bottom: 1px solid #101010;
+            box-shadow: 0 2px 10px #101010;
+            padding: 16px;
+
+            h3 {
+                margin: 0;
+            }
+        }
+
+        div.body {
+            flex: 1;
+            margin: 16px 0;
+            padding: 0 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            div.actions {
+                display: flex;
+                justify-content: center;
+                margin-top: auto;
+                gap: 8px;
+
+                button {
+                    width: 125px;
+                }
+            }
+        }
+    }
+}

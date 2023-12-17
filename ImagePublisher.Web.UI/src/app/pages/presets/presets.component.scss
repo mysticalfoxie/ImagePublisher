@@ -42,10 +42,14 @@ app-presets-component {
             white-space: nowrap;
         }
 
+        td.mat-column-title {
+            max-width: 200px;
+        }
+
         td.mat-column-description {
             white-space: nowrap;
             text-overflow: ellipsis;
-            max-width: 400px;
+            max-width: 300px;
         }
 
         td.mat-column-actions >div {

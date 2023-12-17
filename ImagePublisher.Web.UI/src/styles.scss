@@ -41,3 +41,7 @@ h1, h2, h3, h4, h5, h6, span.heading, span.title {
     --accent: #{mat.get-color-from-palette($accent, 500)};
     --warn: #{mat.get-color-from-palette($warn, 500)};
 }
+
+div.cdk-overlay-backdrop {
+    background: #000A;
+}
