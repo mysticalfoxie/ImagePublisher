@@ -1,17 +1,19 @@
-import { Component } from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import {NavigationEnd, Router} from "@angular/router";
 import {filter, map, Subject} from "rxjs";
+import {ConfirmService} from "./modules/confirm/confirm.service";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
     public path$ = new Subject<string>;
 
     constructor(
-        private _router: Router
+        private _router: Router,
+        private _confirmService: ConfirmService,
     ) {
         this._router.events
             .pipe(
@@ -20,5 +22,9 @@ export class AppComponent {
                 map(x => new RegExp("^\\/(\\w+)").exec(x as string)?.[1]),
                 filter(x => !!x))
             .subscribe(x => this.path$.next(x as string));
+    }
+
+    public async ngAfterViewInit(): Promise<void> {
+        console.log(await this._confirmService.confirm());
     }
 }

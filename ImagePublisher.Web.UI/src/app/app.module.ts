@@ -5,6 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {StatusComponent} from "./components/status/status.component";
 import {MaterialModule} from "./modules/material.module";
+import {ConfirmModule} from "./modules/confirm/confirm.module";
 
 @NgModule({
     declarations: [
@@ -14,7 +15,8 @@ import {MaterialModule} from "./modules/material.module";
     imports: [
         BrowserModule,
         AppRoutingModule,
-        MaterialModule
+        MaterialModule,
+        ConfirmModule
     ],
     providers: [],
     bootstrap: [AppComponent]
