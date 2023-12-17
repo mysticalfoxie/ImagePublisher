@@ -1,0 +1,41 @@
+<div class="header">
+    <span *ngIf="title">{{ title }}</span>
+    <div class="actions">
+        <button mat-icon-button *ngIf="loading" (click)="cancel$.next(null)"><mat-icon>close</mat-icon></button>
+        <button mat-icon-button (click)="delete()"><mat-icon>delete</mat-icon></button>
+    </div>
+</div>
+<div
+    class="body"
+    [style.width]="width + 'px'"
+    [style.height]="height + 'px'">
+    <div class="overlay">
+        <img #img *ngIf="src$ | async" [src]="(src$ | async)!" alt="" width="1" height="1" />
+        <span class="description" *ngIf="!src$">
+            Drag an image here<br>
+            Or just click me...
+        </span>
+        <div
+            class="drop-feedback"
+            [class.allowed]="dragAllowed"
+            [class.denied]="dragDenied">
+            <span>File supported</span>
+            <span>Drop here to upload</span>
+        </div>
+        <input #input type="file" accept="image/png,image/jpg,image/jpeg" />
+        <div
+            *ngIf="loading"
+            class="load-blocker"
+            (click)="$event.stopPropagation()"
+            (dragstart)="$event.stopPropagation()"
+            (dragover)="$event.stopPropagation()"
+            (drop)="$event.stopPropagation()">
+        </div>
+        <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+    </div>
+</div>
+<div *ngIf="hasFileInfo" class="footer">
+    <span class="filename">{{ filename }}</span>
+    <span class="size">{{ filesize }}</span>
+    <span class="ratio">{{ aspect }}</span>
+</div>

@@ -1,0 +1,111 @@
+app-image-input {
+    display: block;
+    width: min-content;
+
+    > div.header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 8px 8px 20px;
+        margin-bottom: 12px;
+        background: #353535;
+        border-top-right-radius: 16px;
+        border-top-left-radius: 16px;
+    }
+
+    > div.body {
+        user-select: none;
+        top: 0;
+        margin-top: -12px;
+        background: #252525;
+        border-right: 1px solid #353535;
+        border-left: 1px solid #353535;
+        padding: 8px;
+
+        > div.overlay {
+            position: relative;
+            width: 100%;
+            height: 100%;
+
+            > input {
+                position: absolute;
+                top: -8px;
+                bottom: -8px;
+                left: -8px;
+                right: -8px;
+                opacity: 0;
+            }
+
+            > img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                opacity: .8;
+            }
+
+            > span.description {
+                position: absolute;
+                font-size: 16px;
+                opacity: .8;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            > div.drop-feedback {
+                position: absolute;
+                top: -8px;
+                left: -8px;
+                right: -8px;
+                bottom: -8px;
+                opacity: .4;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                visibility: hidden;
+            }
+
+            > div.drop-feedback.allowed {
+                border: 1px solid var(--status-green);
+                background: #0F0F0F;
+                visibility: visible;
+            }
+
+            > div.drop-feedback.denied {
+                border: 1px solid var(--status-red);
+                background: #0F0F0F;
+                visibility: visible;
+            }
+
+            > mat-progress-bar {
+                position: absolute;
+                top: -8px;
+                left: -8px;
+                right: -8px;
+                width: unset;
+            }
+
+            > div.load-blocker {
+                position: absolute;
+                top: -8px;
+                bottom: -8px;
+                right: -8px;
+                left: -8px;
+                background: #000000;
+                opacity: .5;
+            }
+        }
+    }
+
+    > div.footer {
+        color: #707070;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 16px;
+        background: #303030;
+        border-bottom-left-radius: 16px;
+        border-bottom-right-radius: 16px;
+    }
+}

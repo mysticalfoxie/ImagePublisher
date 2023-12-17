@@ -7,10 +7,10 @@ app-status {
         border-radius: 50%;
         width: 12px;
         height: 12px;
-        background-color: hsl(0, 60%, 50%);
+        background-color: var(--status-red);
 
         &.true {
-            background-color: hsl(120, 60%, 50%);
+            background-color: var(--status-green);
         }
     }
 

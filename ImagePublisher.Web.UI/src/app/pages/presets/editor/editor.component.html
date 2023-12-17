@@ -18,6 +18,16 @@
 <mat-accordion>
     <mat-expansion-panel [expanded]="true">
         <mat-expansion-panel-header>
+            General
+        </mat-expansion-panel-header>
+
+        <ng-template matExpansionPanelContent>
+            <app-general-preset-editor></app-general-preset-editor>
+        </ng-template>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
             Deviant Art
         </mat-expansion-panel-header>
 

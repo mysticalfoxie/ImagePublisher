@@ -40,6 +40,9 @@ h1, h2, h3, h4, h5, h6, span.heading, span.title {
     --primary: #{mat.get-color-from-palette($primary, 500)};
     --accent: #{mat.get-color-from-palette($accent, 500)};
     --warn: #{mat.get-color-from-palette($warn, 500)};
+
+    --status-green: hsl(120, 60%, 50%);
+    --status-red: hsl(0, 60%, 50%);
 }
 
 div.cdk-overlay-backdrop {
