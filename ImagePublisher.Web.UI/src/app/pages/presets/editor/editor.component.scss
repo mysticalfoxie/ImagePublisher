@@ -1,0 +1,33 @@
+app-editor {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    > div {
+        background-color: #404040;
+        border-radius: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 12px;
+
+        > div {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    mat-expansion-panel-header {
+        height: 60px !important;
+        text-transform: uppercase;
+
+        .mat-expansion-indicator::after {
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+    }
+
+    div.mat-expansion-panel-content {
+        background: #202020;
+    }
+}

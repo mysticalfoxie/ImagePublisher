@@ -6,6 +6,7 @@ import {AppComponent} from './app.component';
 import {StatusComponent} from "./components/status/status.component";
 import {MaterialModule} from "./modules/material.module";
 import {ConfirmModule} from "./modules/confirm/confirm.module";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
     declarations: [
@@ -14,6 +15,7 @@ import {ConfirmModule} from "./modules/confirm/confirm.module";
     ],
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         AppRoutingModule,
         MaterialModule,
         ConfirmModule

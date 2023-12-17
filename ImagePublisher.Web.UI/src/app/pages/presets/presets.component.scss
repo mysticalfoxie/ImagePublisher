@@ -4,7 +4,7 @@ app-presets-component {
     gap: 16px;
 
     > div {
-        background-color: #303030;
+        background-color: #404040;
         border-radius: 16px;
         display: flex;
         justify-content: space-between;
@@ -22,7 +22,7 @@ app-presets-component {
         }
 
         thead >tr >th {
-            background-color: #404040 !important;
+            background-color: #303030 !important;
             font-family: Rowdies, sans-serif;
             font-size: 16px;
 
@@ -31,7 +31,7 @@ app-presets-component {
         }
 
         tbody >tr {
-            background-color: #252525 !important;
+            background-color: #202020 !important;
             > td { padding: 8px 16px !important; }
         }
 

@@ -1,0 +1,59 @@
+<div>
+    <div>
+        <button mat-icon-button [routerLink]="'presets'">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <span class="title">Create a Preset</span>
+    </div>
+    <div>
+        <button mat-icon-button>
+            <mat-icon>delete</mat-icon>
+        </button>
+        <button mat-icon-button>
+            <mat-icon>done</mat-icon>
+        </button>
+    </div>
+</div>
+
+<mat-accordion>
+    <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+            Deviant Art
+        </mat-expansion-panel-header>
+
+        <ng-template matExpansionPanelContent>
+            <app-da-preset-editor></app-da-preset-editor>
+        </ng-template>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            Pinterest
+        </mat-expansion-panel-header>
+
+        <ng-template matExpansionPanelContent>
+            <app-da-preset-editor></app-da-preset-editor>
+        </ng-template>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            Instagram
+        </mat-expansion-panel-header>
+
+        <ng-template matExpansionPanelContent>
+            <app-da-preset-editor></app-da-preset-editor>
+        </ng-template>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            Facebook
+        </mat-expansion-panel-header>
+
+        <ng-template matExpansionPanelContent>
+            <app-da-preset-editor></app-da-preset-editor>
+        </ng-template>
+    </mat-expansion-panel>
+
+</mat-accordion>

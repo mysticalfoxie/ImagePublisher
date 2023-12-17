@@ -1,10 +1,12 @@
 <div>
     <div>
         <span class="title">Saved Presets</span>
-
     </div>
     <div>
-        <button mat-icon-button><mat-icon>add</mat-icon></button>
+        <button mat-icon-button [routerLink]="'presets/new'">
+            <mat-icon>add</mat-icon>
+        </button>
+
         <button mat-icon-button><mat-icon>history</mat-icon></button>
     </div>
 </div>

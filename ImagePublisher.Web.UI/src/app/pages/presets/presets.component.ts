@@ -1,6 +1,7 @@
 import {Component, ViewEncapsulation} from "@angular/core";
 import {MatTableDataSource} from "@angular/material/table";
-import {Subject} from "rxjs";
+import {filter, from, Subject, switchMap} from "rxjs";
+import {ConfirmService} from "../../modules/confirm/confirm.service";
 
 export interface Element {
     id: number;
@@ -26,8 +27,10 @@ const ELEMENTS: Element[] = [
     encapsulation: ViewEncapsulation.None
 })
 export class PresetsComponent {
-    constructor() {
-
+    constructor (
+        private _confirmService: ConfirmService
+    ) {
+        this.subscribeDelete();
     }
 
     public displayedColumns: string[] = ['image', 'title', 'description', 'timestamp', 'actions' ];
@@ -36,4 +39,18 @@ export class PresetsComponent {
     public edit$ = new Subject<number>();
     public delete$ = new Subject<number>();
     public upload$ = new Subject<number>();
+
+    public subscribeDelete(): void {
+        this.delete$
+            .pipe(
+                switchMap(() => from(this._confirmService.confirm())),
+                filter(x => !!x))
+            .subscribe({
+                next: () => console.log('debug'),
+                error: err => {
+                    console.error(err);
+                    this.subscribeDelete();
+                }
+            })
+    }
 }

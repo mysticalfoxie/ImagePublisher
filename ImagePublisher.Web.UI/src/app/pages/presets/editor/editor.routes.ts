@@ -1,8 +1,8 @@
 import {Route} from "@angular/router";
-import {DAPresetEditorComponent} from "./components/da-preset-editor.component";
+import {EditorComponent} from "./editor.component";
 
 export const EditorRoutes: Route[] = [
-    { path: 'new', component: DAPresetEditorComponent },
-    { path: ':id', component: DAPresetEditorComponent },
+    { path: 'new', component: EditorComponent },
+    { path: ':id', component: EditorComponent },
     { path: '**', redirectTo: '/presets', pathMatch: 'full' }
 ]

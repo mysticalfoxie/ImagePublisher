@@ -8,9 +8,7 @@ import {ConfirmService} from "./modules/confirm/confirm.service";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements AfterViewInit {
-    public path$ = new Subject<string>;
-
+export class AppComponent {
     constructor(
         private _router: Router,
         private _confirmService: ConfirmService,
@@ -24,7 +22,5 @@ export class AppComponent implements AfterViewInit {
             .subscribe(x => this.path$.next(x as string));
     }
 
-    public async ngAfterViewInit(): Promise<void> {
-        console.log(await this._confirmService.confirm());
-    }
+    public path$ = new Subject<string>;
 }
