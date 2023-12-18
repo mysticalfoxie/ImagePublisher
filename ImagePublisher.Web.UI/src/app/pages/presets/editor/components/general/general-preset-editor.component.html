@@ -1,4 +1,60 @@
-<div class="row">
+<mat-checkbox #seperatedImages>Separate High Detailed from Low Detailed</mat-checkbox>
+<div class="row img-inputs" *ngIf="seperatedImages.checked">
     <app-image-input title="Image - High Detailed"></app-image-input>
     <app-image-input title="Image - Low Detailed"></app-image-input>
+</div>
+<div class="row img-inputs" *ngIf="!seperatedImages.checked">
+    <app-image-input title="Image"></app-image-input>
+</div>
+<div class="row txt-inputs">
+    <div
+        class="label"
+        [class.focused]="titleFocused">
+        <mat-icon>title</mat-icon>
+        <span>Title</span>
+    </div>
+    <mat-form-field
+        class="no-subscript">
+        <input
+            matInput
+            (focus)="titleFocused = true"
+            (blur)="titleFocused = false"
+            placeholder="Title">
+    </mat-form-field>
+</div>
+
+<div class="row txt-inputs">
+    <div class="label"
+         [class.focused]="descriptionFocused">
+        <mat-icon>subtitles</mat-icon>
+        <span>Description</span>
+    </div>
+    <mat-form-field
+        class="no-subscript">
+        <textarea
+            matInput
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="12"
+            placeholder="Description"
+            (focus)="descriptionFocused = true"
+            (blur)="descriptionFocused = false"
+        ></textarea>
+    </mat-form-field>
+</div>
+
+<div class="row txt-inputs">
+    <div class="label"
+         [class.focused]="tagsFocused">
+        <mat-icon>sell</mat-icon>
+        <span>Tags</span>
+    </div>
+<mat-form-field
+    class="no-subscript">
+    <input
+        matInput
+        (focus)="tagsFocused = true"
+        (blur)="tagsFocused = false"
+        placeholder="Tags">
+</mat-form-field>
 </div>

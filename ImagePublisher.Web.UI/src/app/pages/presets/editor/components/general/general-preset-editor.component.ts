@@ -7,5 +7,7 @@ import {Component, ViewEncapsulation} from "@angular/core";
     encapsulation: ViewEncapsulation.None
 })
 export class GeneralPresetEditorComponent {
-
+    public titleFocused: boolean = false;
+    public descriptionFocused: boolean = false;
+    public tagsFocused: boolean = false;
 }

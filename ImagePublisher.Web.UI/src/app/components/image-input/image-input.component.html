@@ -1,6 +1,7 @@
 <div class="header">
     <span *ngIf="title">{{ title }}</span>
     <div class="actions">
+        <ng-content></ng-content>
         <button mat-icon-button *ngIf="loading" (click)="cancel$.next(null)"><mat-icon>close</mat-icon></button>
         <button mat-icon-button *ngIf="(src$ | async)" (click)="delete()"><mat-icon>delete</mat-icon></button>
     </div>

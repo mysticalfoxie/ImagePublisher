@@ -8,6 +8,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MaterialModule} from "../../../modules/material.module";
 import {GeneralPresetEditorComponent} from "./components/general/general-preset-editor.component";
 import {AppComponentsModule} from "../../../modules/components.module";
+import {CommonModule, NgIf} from "@angular/common";
 
 @NgModule({
     declarations: [
@@ -17,6 +18,7 @@ import {AppComponentsModule} from "../../../modules/components.module";
     ],
     imports: [
         EditorRoutingModule,
+        CommonModule,
         MaterialModule,
         AppComponentsModule,
     ],
