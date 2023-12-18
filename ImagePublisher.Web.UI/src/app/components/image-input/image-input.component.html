@@ -2,7 +2,7 @@
     <span *ngIf="title">{{ title }}</span>
     <div class="actions">
         <button mat-icon-button *ngIf="loading" (click)="cancel$.next(null)"><mat-icon>close</mat-icon></button>
-        <button mat-icon-button (click)="delete()"><mat-icon>delete</mat-icon></button>
+        <button mat-icon-button *ngIf="(src$ | async)" (click)="delete()"><mat-icon>delete</mat-icon></button>
     </div>
 </div>
 <div
@@ -10,8 +10,16 @@
     [style.width]="width + 'px'"
     [style.height]="height + 'px'">
     <div class="overlay">
-        <img #img *ngIf="src$ | async" [src]="(src$ | async)!" alt="" width="1" height="1" />
-        <span class="description" *ngIf="!src$">
+        <!--suppress AngularNgOptimizedImage -->
+        <img
+            #img
+            *ngIf="src$ | async"
+            [src]="(src$ | async)!"
+            alt=""
+            width="1"
+            height="1" />
+
+        <span class="description" *ngIf="!(src$ | async) && !dragAllowed && !dragDenied">
             Drag an image here<br>
             Or just click me...
         </span>
@@ -19,10 +27,21 @@
             class="drop-feedback"
             [class.allowed]="dragAllowed"
             [class.denied]="dragDenied">
-            <span>File supported</span>
-            <span>Drop here to upload</span>
+            <span *ngIf="dragAllowed">File supported</span>
+            <span *ngIf="dragAllowed">Drop here to upload</span>
+            <span *ngIf="dragDenied">File not supported</span>
+            <span *ngIf="dragDenied">You can't drop this here</span>
         </div>
-        <input #input type="file" accept="image/png,image/jpg,image/jpeg" />
+
+        <input
+            #input
+            draggable="true"
+            type="file"
+            label=""
+            title=""
+            placeholder=""
+            accept="image/png,image/jpg,image/jpeg" />
+
         <div
             *ngIf="loading"
             class="load-blocker"
@@ -35,7 +54,8 @@
     </div>
 </div>
 <div *ngIf="hasFileInfo" class="footer">
-    <span class="filename">{{ filename }}</span>
-    <span class="size">{{ filesize }}</span>
-    <span class="ratio">{{ aspect }}</span>
+    <span>{{ filename }}</span>
+    <span>{{ filesize }}</span>
+    <span>{{ imageWidth }}x{{ imageHeight }}</span>
+    <span>{{ aspect }}</span>
 </div>

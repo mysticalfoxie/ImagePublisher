@@ -1,3 +1,11 @@
-app-image-input {
+app-general-preset-editor {
     margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+
+    > div.row {
+        display: flex;
+        flex-flow: row wrap;
+        gap: 16px;
+    }
 }

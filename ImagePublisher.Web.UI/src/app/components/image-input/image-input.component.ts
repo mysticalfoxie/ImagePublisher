@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, Input, ViewChild, ViewEncapsulation} from "@angular/core";
 import {
     BehaviorSubject,
-    catchError,
+    catchError, filter,
     from,
     fromEvent,
     map,
@@ -21,49 +21,8 @@ import {
 export class ImageInputComponent implements AfterViewInit {
     constructor() {
         this.src$.subscribe(x => {
-            if (!x)
-                this.clearFileInformations();
-            else
-                this.readFileInformations();
-        })
-    }
-
-    private clearFileInformations() {
-        this.hasFileInfo = false;
-        this.filename = null;
-        this.filesize = null;
-        this.aspect = null;
-    }
-
-    private formatFileSize(size: number): string {
-        const kilobytes = size / 1024;
-        if (kilobytes < 1024)
-            return `${kilobytes.toFixed(2)} KB`;
-
-        const megabytes = kilobytes / 1024;
-        return `${megabytes.toFixed(2)} MB`;
-    }
-
-    private readFileInformations() {
-        if (!this.input?.nativeElement.files?.length) return;
-        if (!this.img?.nativeElement) return;
-
-        const file = this.input.nativeElement.files.item(0)!;
-        this.filename = file.name;
-        this.filesize = this.formatFileSize(file.size);
-        this.aspect = this.getAspectRatio();
-        this.hasFileInfo = true;
-    }
-
-    private gcd(a: number, b: number): number {
-        return b == 0 ? a : this.gcd(b, a % b);
-    }
-
-    private getAspectRatio(): string {
-        const width = this.img!.nativeElement.width;
-        const height = this.img!.nativeElement.height;
-        const divisor = this.gcd(width, height);
-        return `${width / divisor}:${height / divisor}`;
+            if (!x) this.clearFileInformations();
+        });
     }
 
     public ngAfterViewInit(): void {
@@ -78,14 +37,26 @@ export class ImageInputComponent implements AfterViewInit {
             });
 
         fromEvent(this.input?.nativeElement!, 'dragleave').subscribe(() => this.resetDrag());
-        fromEvent(this.input?.nativeElement!, 'drop').subscribe(() => this.resetDrag());
-        fromEvent(this.input?.nativeElement!, 'change').subscribe(x => this.onFileChange());
+        fromEvent(this.input?.nativeElement!, 'drop').subscribe(x => this.resetDrag());
+        fromEvent(this.input?.nativeElement!, 'change').subscribe(() => this.onFileChange());
     }
 
     public readonly src$ = new BehaviorSubject<string | null>(null);
 
-    @Input() public set src(value: string) {
-        this.src$.next(value);
+    private _srcLocked = false;
+    private _src: string | undefined;
+
+    public get src(): string | undefined {
+        return this._src;
+    }
+
+    @Input()
+    public set src(value: string) {
+        if (this._srcLocked) return;
+        this._srcLocked = true;
+        this._src = value;
+        this.loadImageFromFilepath(value)
+            .finally(() => this._srcLocked = false);
     }
 
     @Input() public title: string | undefined;
@@ -95,6 +66,8 @@ export class ImageInputComponent implements AfterViewInit {
     public hasFileInfo: boolean = false;
     public filename: string | null = null;
     public filesize: string | null = null;
+    public imageWidth: number | null = null;
+    public imageHeight: number | null = null;
     public aspect: string | null = null;
 
     public dragAllowed: boolean = false;
@@ -136,11 +109,13 @@ export class ImageInputComponent implements AfterViewInit {
 
     private loadImageToBlob(file: File): Observable<string> {
         let subscription: Subscription;
-        const promise = new Promise<string>((resolve, reject) => {
+        const promise = new Promise<string>(async (resolve, reject) => {
             const reader = new FileReader();
 
-            reader.onload = e => {
+            reader.onload = async e => {
                 const result = e.target!.result as string;
+                await this.readFileInformations(result);
+
                 this.loading = false;
                 resolve(result);
             }
@@ -162,8 +137,83 @@ export class ImageInputComponent implements AfterViewInit {
             }));
     }
 
+    private clearFileInformations() {
+        this.hasFileInfo = false;
+        this.filename = null;
+        this.filesize = null;
+        this.imageWidth = null;
+        this.imageHeight = null;
+        this.aspect = null;
+    }
+
+    private formatFileSize(size: number): string {
+        const kilobytes = size / 1024;
+        if (kilobytes < 1024)
+            return `${kilobytes.toFixed(2)} KB`;
+
+        const megabytes = kilobytes / 1024;
+        return `${megabytes.toFixed(2)} MB`;
+    }
+
+    private async readFileInformations(imageBuffer: string, blob: Blob | null = null): Promise<void> {
+        const image = await this.loadPseudoImage(imageBuffer);
+
+        if (this.input?.nativeElement.files?.length) {
+            const file = this.input.nativeElement.files.item(0)!;
+            this.filename = file.name;
+            this.filesize = this.formatFileSize(file.size);
+        }
+
+        if (blob) {
+            this.filename = this.getFilenameByPath(this._src);
+            this.filesize = this.formatFileSize(blob.size);
+        }
+
+        this.readFileInformationsFromImage(image);
+
+        this.hasFileInfo = true;
+    }
+
+    private getFilenameByPath(path: string | undefined): string | null {
+        if (!path) return null;
+        const regex = new RegExp(".*\\/(.*\\.\\w+)");
+        return regex.exec(path)?.[1] || null;
+    }
+
+    private readFileInformationsFromImage(image: HTMLImageElement): void {
+        this.imageHeight = image.height;
+        this.imageWidth = image.width;
+        this.aspect = this.calculateAspectRatio(image);
+    }
+
+    private gcd(a: number, b: number): number {
+        return b == 0 ? a : this.gcd(b, a % b);
+    }
+
+    private loadPseudoImage(imageBuffer: string): Promise<HTMLImageElement> {
+        return new Promise((resolve, reject) => {
+            const image = new Image();
+            image.onload = () => resolve(image);
+            image.onerror = err => reject(err);
+            image.src = imageBuffer;
+        });
+    }
+
+    private calculateAspectRatio(image: HTMLImageElement): string {
+        const divisor = this.gcd(image.width, image.height);
+        return `${image.width / divisor}:${image.height / divisor}`;
+    }
+
     private resetDrag(): void {
         this.dragAllowed = false;
         this.dragDenied = false;
+    }
+
+    private async loadImageFromFilepath(filepath: string): Promise<void> {
+        const response = await fetch(filepath);
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        await this.readFileInformations(url, blob);
+        this.src$.next(url);
     }
 }
