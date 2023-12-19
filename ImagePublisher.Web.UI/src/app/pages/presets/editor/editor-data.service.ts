@@ -1,14 +1,19 @@
 import {Injectable} from "@angular/core";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, filter} from "rxjs";
 import {EditorModel} from "../../../models/editor.model";
+import {EditorForm} from "./forms/editor.form";
 
 @Injectable()
-export class EditorService {
+export class EditorDataService {
     constructor() {
-        this.data$.subscribe(x => this.save(x));
+        this.form = new EditorForm();
+        this.form.data$
+            .pipe(filter(() => this._loaded))
+            .subscribe(x => this.save(x));
     }
 
-    public data$ = new BehaviorSubject<EditorModel | null>(null);
+    public form: EditorForm;
+    private _loaded: boolean = false;
 
     private save(model: EditorModel | null): void {
         if (!model) {
@@ -21,10 +26,15 @@ export class EditorService {
     }
 
     public load(): void {
+        this._loaded = true;
         const item = sessionStorage.getItem('editor');
-        if (!item) return;
+        if (!item) {
+            this.form.initialize();
+            return;
+        }
 
         const model: EditorModel = JSON.parse(item);
-        this.data$.next(model);
+        this.form.initialize(model);
+        this.form.data$.next(model);
     }
 }

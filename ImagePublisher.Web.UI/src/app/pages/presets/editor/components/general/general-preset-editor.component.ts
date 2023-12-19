@@ -1,4 +1,5 @@
 import {Component, ViewEncapsulation} from "@angular/core";
+import {EditorDataService} from "../../editor-data.service";
 
 @Component({
     selector: 'app-general-preset-editor',
@@ -7,6 +8,15 @@ import {Component, ViewEncapsulation} from "@angular/core";
     encapsulation: ViewEncapsulation.None
 })
 export class GeneralPresetEditorComponent {
+    public constructor(
+        private _dataService: EditorDataService,
+    ) {
+    }
+
+    public get form() {
+        return this._dataService.form.general;
+    }
+
     public titleFocused: boolean = false;
     public descriptionFocused: boolean = false;
     public tagsFocused: boolean = false;

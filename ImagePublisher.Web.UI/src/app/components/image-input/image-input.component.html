@@ -2,8 +2,8 @@
     <span *ngIf="title">{{ title }}</span>
     <div class="actions">
         <ng-content></ng-content>
-        <button mat-icon-button *ngIf="loading" (click)="cancel$.next(null)"><mat-icon>close</mat-icon></button>
-        <button mat-icon-button *ngIf="(src$ | async)" (click)="delete()"><mat-icon>delete</mat-icon></button>
+        <button mat-icon-button *ngIf="service.loading" (click)="service.cancel$.next(null)"><mat-icon>close</mat-icon></button>
+        <button mat-icon-button *ngIf="(service.url$ | async)" (click)="service.delete()"><mat-icon>delete</mat-icon></button>
     </div>
 </div>
 <div
@@ -13,14 +13,13 @@
     <div class="overlay">
         <!--suppress AngularNgOptimizedImage -->
         <img
-            #img
-            *ngIf="src$ | async"
-            [src]="(src$ | async)!"
+            *ngIf="service.url$ | async"
+            [src]="(service.url$ | async)!"
             alt=""
             width="1"
             height="1" />
 
-        <span class="description" *ngIf="!(src$ | async) && !dragAllowed && !dragDenied">
+        <span class="description" *ngIf="!(service.url$ | async) && !dragAllowed && !dragDenied">
             Drag an image here<br>
             Or just click me...
         </span>
@@ -44,19 +43,19 @@
             accept="image/png,image/jpg,image/jpeg" />
 
         <div
-            *ngIf="loading"
+            *ngIf="service.loading"
             class="load-blocker"
             (click)="$event.stopPropagation()"
             (dragstart)="$event.stopPropagation()"
             (dragover)="$event.stopPropagation()"
             (drop)="$event.stopPropagation()">
         </div>
-        <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+        <mat-progress-bar *ngIf="service.loading" mode="indeterminate"></mat-progress-bar>
     </div>
 </div>
-<div *ngIf="hasFileInfo" class="footer">
-    <span>{{ filename }}</span>
-    <span>{{ filesize }}</span>
-    <span>{{ imageWidth }}x{{ imageHeight }}</span>
-    <span>{{ aspect }}</span>
+<div *ngIf="service.hasFileInfo" class="footer">
+    <span>{{ service.filename }}</span>
+    <span>{{ service.filesize }}</span>
+    <span>{{ service.imageWidth }}x{{ service.imageHeight }}</span>
+    <span>{{ service.aspect }}</span>
 </div>

@@ -1,4 +1,5 @@
 import {Component, ViewEncapsulation} from "@angular/core";
+import {EditorDataService} from "./editor-data.service";
 
 @Component({
     selector: 'app-editor',
@@ -7,5 +8,9 @@ import {Component, ViewEncapsulation} from "@angular/core";
     encapsulation: ViewEncapsulation.None
 })
 export class EditorComponent {
-
+    public constructor(
+        private _dataService: EditorDataService
+    ) {
+        this._dataService.load();
+    }
 }
