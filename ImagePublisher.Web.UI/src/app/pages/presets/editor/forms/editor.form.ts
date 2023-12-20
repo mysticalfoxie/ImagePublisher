@@ -1,5 +1,5 @@
 import {FormGroup} from "@angular/forms";
-import {BehaviorSubject, map} from "rxjs";
+import {BehaviorSubject, map, Subject} from "rxjs";
 import {GeneralPresetForm} from "./general-preset.form";
 import {EditorModel} from "../../../../models/editor.model";
 import {DAPresetForm} from "./da-preset.form";
@@ -29,6 +29,7 @@ export class EditorForm extends FormGroup {
     }
 
     public readonly data$ = new BehaviorSubject<EditorModel | null>(null);
+    public readonly clear$ = new Subject();
 
     public general: GeneralPresetForm;
     public deviantart: DAPresetForm;
@@ -50,6 +51,11 @@ export class EditorForm extends FormGroup {
         this.deviantart.tags.setValue(model?.deviantart.tags ? model?.deviantart.tags : model?.general.tags || '');
         this.deviantart.character.setValue(model?.deviantart.character || '');
         this.deviantart.location.setValue(model?.deviantart.location || '');
+    }
+
+    public clear(): void {
+        this.initialize(null);
+        this.clear$.next(null);
     }
 }
 

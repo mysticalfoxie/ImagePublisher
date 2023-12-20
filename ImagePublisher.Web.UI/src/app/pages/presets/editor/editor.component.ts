@@ -9,8 +9,8 @@ import {EditorDataService} from "./editor-data.service";
 })
 export class EditorComponent {
     public constructor(
-        private _dataService: EditorDataService
+        public service: EditorDataService
     ) {
-        this._dataService.load();
+        this.service.load();
     }
 }

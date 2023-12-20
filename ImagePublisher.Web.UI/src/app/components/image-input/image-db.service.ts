@@ -1,11 +1,14 @@
 import {Injectable} from "@angular/core";
 import {ImageDataModel} from "./image-data.model";
+import {ImageInputComponent} from "./image-input.component";
 
 @Injectable()
 export class ImageDBService {
 
-    public saveImage(image: ImageDataModel) {
-        return this.openDatabase(async event => {
+    public ui: ImageInputComponent | undefined;
+
+    public async saveImage(image: ImageDataModel): Promise<void> {
+        await this.openDatabase(async event => {
             const response = await fetch(image.base64);
             const blob = await response.blob();
             const url = URL.createObjectURL(blob);
@@ -14,8 +17,22 @@ export class ImageDBService {
         });
     }
 
-    public async refreshBlobUrl(url: string): Promise<string> {
-        return await this.openDatabase(async event => await this.reloadImageByBlobUrl(event, url));
+    public async refreshBlobUrl(): Promise<string | null> {
+        return await this.openDatabase(async event => await this.reloadImageByBlobUrl(event));
+    }
+
+    public async deleteImage(url: string): Promise<void> {
+        await this.openDatabase(async event => await this.deleteImageByUrl(event, url));
+    }
+
+    public async getImage(url: string): Promise<ImageDataModel> {
+        const id = this.ui?.id || ImageDBService.getIdByUrl(url);
+        return await this.openDatabase(async event => await this.getObjectById(event, id));
+    }
+
+    private async deleteImageByUrl(event: Event, url: string) {
+        const id = this.ui?.id || ImageDBService.getIdByUrl(url);
+        await this.executeRequest(event, 'readwrite', async store => store.delete(id));
     }
 
     private openDatabase<T>(fn: (e: Event) => Promise<T>): Promise<T> {
@@ -32,14 +49,14 @@ export class ImageDBService {
 
     private createObjectStore(event: any) {
         const db = (event.target! as any).result as IDBDatabase;
-        db.createObjectStore("IPObjectStore", {keyPath: "id"});
+        db.createObjectStore("ImageInputComponent", {keyPath: "id"});
     }
 
     private executeRequest<T>(event: Event, readability: 'readonly' | 'readwrite', action: (store: IDBObjectStore) => Promise<IDBRequest>): Promise<T> {
         return new Promise(async (resolve, reject) => {
             const db = (event.target! as any).result as IDBDatabase;
-            const transaction = db.transaction(["IPObjectStore"], readability);
-            const store = transaction.objectStore("IPObjectStore");
+            const transaction = db.transaction(['ImageInputComponent'], readability);
+            const store = transaction.objectStore("ImageInputComponent");
 
             const request = await action(store);
 
@@ -48,26 +65,38 @@ export class ImageDBService {
         })
     }
 
-    private async reloadImageByBlobUrl(event: any, recentUrl: string): Promise<string> {
-        const entry = await this.executeRequest<ImageDataModel>(event, 'readonly', async store => {
-            const id = this.getIdByUrl(recentUrl);
-            return store.get(id);
+    private getObjectById<T>(event: Event, id: string): Promise<T> {
+        return new Promise(async (resolve, reject) => {
+            const db = (event.target! as any).result as IDBDatabase;
+            const transaction = db.transaction(['ImageInputComponent'], 'readonly');
+            const store = transaction.objectStore("ImageInputComponent");
+            const request = await store.get(id);
+            request.onerror = err => reject(err);
+            request.onsuccess = () => resolve(request.result as T);
         });
+    }
 
+    private async reloadImageByBlobUrl(event: any): Promise<string | null> {
+        if (!this.ui?.id)
+            throw new Error("Cannot reload the current image when the component has no key attribute assigned.");
+
+        const entry = await this.getObjectById<ImageDataModel>(event, this.ui!.id);
+        if (!entry) return null;
+
+        const oldId = this.ui!.id || ImageDBService.getIdByUrl(entry.blobUrl);
         const response = await fetch(entry.base64);
         const blob = await response.blob();
         const newUrl = URL.createObjectURL(blob);
-        const id = this.getIdByUrl(newUrl);
         entry.blobUrl = newUrl;
-        entry.id = id;
+        entry.id = this.ui!.id || ImageDBService.getIdByUrl(newUrl);
 
-        await this.executeRequest<void>(event, 'readwrite', async store => store.delete(entry.id));
+        await this.executeRequest<void>(event, 'readwrite', async store => store.delete(oldId));
         await this.executeRequest<void>(event, 'readwrite', async store => store.put(entry));
 
         return entry.blobUrl;
     }
 
-    private getIdByUrl(url: string): string {
+    public static getIdByUrl(url: string): string {
         const regex = new RegExp("(\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12})$");
         const match = regex.exec(url)?.[1];
         if (!match)
@@ -79,13 +108,13 @@ export class ImageDBService {
     private saveImageToDB(event: any, image: ImageDataModel): Promise<void> {
         return new Promise((resolve, reject) => {
             const db = (event.target! as any).result as IDBDatabase;
-            const transaction = db.transaction(["IPObjectStore"], "readwrite");
-            const store = transaction.objectStore("IPObjectStore");
-            image.id = this.getIdByUrl(image.blobUrl);
+            const transaction = db.transaction(["ImageInputComponent"], "readwrite");
+            const store = transaction.objectStore("ImageInputComponent");
+            image.id = this.ui!.id || ImageDBService.getIdByUrl(image.blobUrl);
             const request = store.put(image);
 
             request.onerror = err => reject(err);
             request.onsuccess = () => resolve();
-        })
+        });
     }
 }

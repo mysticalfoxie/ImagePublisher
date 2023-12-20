@@ -1,12 +1,12 @@
 <form [formGroup]="form">
 
     <mat-checkbox #seperatedImages formControlName="hdld">Separate High Detailed from Low Detailed</mat-checkbox>
-    <div class="row img-inputs" *ngIf="seperatedImages.checked">
-        <app-image-input title="Image - High Detailed" formControlName="hdImage"></app-image-input>
-        <app-image-input title="Image - Low Detailed" formControlName="ldImage"></app-image-input>
+    <div class="row img-inputs" [style.display]="seperatedImages.checked ? 'flex' : 'none'">
+        <app-image-input #hdImage title="Image - High Detailed" formControlName="hdImage" id="hdImage"></app-image-input>
+        <app-image-input #ldImage title="Image - Low Detailed" formControlName="ldImage" id="ldImage"></app-image-input>
     </div>
-    <div class="row img-inputs" *ngIf="!seperatedImages.checked">
-        <app-image-input title="Image" formControlName="image"></app-image-input>
+    <div class="row img-inputs" [style.display]="!seperatedImages.checked ? 'flex' : 'none'">
+        <app-image-input #image title="Image" formControlName="image" id="image"></app-image-input>
     </div>
 
     <div class="row txt-inputs">

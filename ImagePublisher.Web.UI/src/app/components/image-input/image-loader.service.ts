@@ -1,5 +1,6 @@
 import {ImageDataModel} from "./image-data.model";
 import {Injectable} from "@angular/core";
+import {ImageDBService} from "./image-db.service";
 
 @Injectable()
 export class ImageLoaderService {
@@ -22,12 +23,22 @@ export class ImageLoaderService {
         });
     }
 
+    private async loadBlobUrl(base64: string): Promise<string> {
+        const response = await fetch(base64);
+        const blob = await response.blob();
+        return URL.createObjectURL(blob);
+    }
+
     public async loadImage(file: File): Promise<ImageDataModel> {
-        const base64 = await this.loadImageData(file)
+        const base64 = await this.loadImageData(file);
+        const url = await this.loadBlobUrl(base64);
         const image = await this.loadPseudoImage(base64);
         const filesize = this.formatFileSize(file.size);
         const aspectRatio = this.calculateAspectRatio(image);
+
         return {
+            id: ImageDBService.getIdByUrl(url),
+            blobUrl: url,
             base64: base64,
             filename: file.name,
             filesize: filesize,

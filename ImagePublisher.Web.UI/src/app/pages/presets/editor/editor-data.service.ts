@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {BehaviorSubject, filter} from "rxjs";
+import {filter} from "rxjs";
 import {EditorModel} from "../../../models/editor.model";
 import {EditorForm} from "./forms/editor.form";
 
@@ -17,17 +17,17 @@ export class EditorDataService {
 
     private save(model: EditorModel | null): void {
         if (!model) {
-            sessionStorage.removeItem('editor');
+            localStorage.removeItem('editor');
             return;
         }
 
         const json = JSON.stringify(model);
-        sessionStorage.setItem('editor', json);
+        localStorage.setItem('editor', json);
     }
 
     public load(): void {
         this._loaded = true;
-        const item = sessionStorage.getItem('editor');
+        const item = localStorage.getItem('editor');
         if (!item) {
             this.form.initialize();
             return;
@@ -36,5 +36,9 @@ export class EditorDataService {
         const model: EditorModel = JSON.parse(item);
         this.form.initialize(model);
         this.form.data$.next(model);
+    }
+
+    public clear() {
+        this.form.clear();
     }
 }

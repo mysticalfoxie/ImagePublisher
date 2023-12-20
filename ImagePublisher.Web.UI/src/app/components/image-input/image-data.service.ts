@@ -10,7 +10,7 @@ export class ImageDataService {
         private _dbService: ImageDBService,
         private _loaderService: ImageLoaderService
     ) {
-        this.url$.subscribe(x => {
+        this.url$.subscribe(async x => {
             if (!x) this.clearFileInformations();
         });
     }
@@ -22,20 +22,20 @@ export class ImageDataService {
     public hasFileInfo: boolean = false;
     public filename: string | null = null;
     public filesize: string | null = null;
-    public imageWidth: number | null = null;
-    public imageHeight: number | null = null;
+    public imageWidth: string | null = null;
+    public imageHeight: string | null = null;
     public aspect: string | null = null;
     public loading: boolean = false;
 
-
-    public delete(): void {
-        if (!this.url$) return;
+    public async delete(): Promise<void> {
+        if (!this.url$.value) return;
 
         // Set it to undefined BEFORE the Blob revocation to avoid a skip of the deletion because of assigned references
         const src = this.url$.value;
         this.url$.next(null);
 
         try {
+            await this._dbService.deleteImage(src);
             URL.revokeObjectURL(src!)
         } catch {
         }
@@ -51,7 +51,23 @@ export class ImageDataService {
     }
 
     public async onFileChange(file: File): Promise<void> {
+        if (this.url$.value)
+            await this._dbService.deleteImage(this.url$.value);
+
         const image = await this._loaderService.loadImage(file);
+        this.url$.next(image.blobUrl);
         await this._dbService.saveImage(image);
+        await this.readFileInformations();
+    }
+
+    private async readFileInformations(): Promise<void> {
+        if (!this.url$.value) return;
+        const image = await this._dbService.getImage(this.url$.value);
+        this.filename = image.filename;
+        this.filesize = image.filesize;
+        this.imageWidth = image.width;
+        this.imageHeight = image.height;
+        this.aspect = image.aspectRatio;
+        this.hasFileInfo = true;
     }
 }

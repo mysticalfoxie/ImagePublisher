@@ -1,4 +1,4 @@
-<div>
+<div class="header">
     <div>
         <button mat-icon-button [routerLink]="'presets'">
             <mat-icon>arrow_back</mat-icon>
@@ -6,7 +6,7 @@
         <span class="title">Create a Preset</span>
     </div>
     <div>
-        <button mat-icon-button>
+        <button mat-icon-button (click)="service.clear();">
             <mat-icon>delete</mat-icon>
         </button>
         <button mat-icon-button>
@@ -15,7 +15,7 @@
     </div>
 </div>
 
-<mat-accordion>
+<mat-accordion multi="true">
     <mat-expansion-panel [expanded]="true">
         <mat-expansion-panel-header>
             General

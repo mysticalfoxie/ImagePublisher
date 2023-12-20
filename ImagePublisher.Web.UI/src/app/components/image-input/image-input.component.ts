@@ -1,5 +1,14 @@
-import {AfterViewInit, Component, ElementRef, forwardRef, Input, ViewChild, ViewEncapsulation} from "@angular/core";
-import {from, fromEvent, map, tap} from "rxjs";
+import {
+    AfterViewInit,
+    Component,
+    ElementRef,
+    forwardRef,
+    Input,
+    OnInit,
+    ViewChild,
+    ViewEncapsulation
+} from "@angular/core";
+import {fromEvent, map} from "rxjs";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {ImageDataService} from "./image-data.service";
 import {ImageDBService} from "./image-db.service";
@@ -21,16 +30,23 @@ import {ImageLoaderService} from "./image-loader.service";
         }
     ]
 })
-export class ImageInputComponent implements AfterViewInit, ControlValueAccessor {
+export class ImageInputComponent implements OnInit, AfterViewInit, ControlValueAccessor {
     public constructor(
         public service: ImageDataService,
         private _dbService: ImageDBService,
         private _dataService: ImageDataService
     ) {
         this.service.ui = this;
+        this._dbService.ui = this;
         this.service.url$.subscribe(x => {
             this._onChange?.(x);
         });
+    }
+
+    public async ngOnInit(): Promise<void> {
+        const url = await this._dbService.refreshBlobUrl();
+        if (!url) return;
+        this._dataService.url$.next(url);
     }
 
     public ngAfterViewInit(): void {
@@ -49,27 +65,12 @@ export class ImageInputComponent implements AfterViewInit, ControlValueAccessor 
         fromEvent(this.input?.nativeElement!, 'change').subscribe(() => this.onFileChange());
     }
 
-    private _src: string | undefined;
-    private _srcLocked = false;
     private _onChange: ((value: any) => void) | undefined;
-
-    public get src(): string | undefined {
-        return this._src;
-    }
-
-    @Input()
-    public set src(value: string) {
-        if (this._srcLocked) return;
-
-        this._srcLocked = true;
-        from(this._dbService.refreshBlobUrl(value))
-            .pipe(tap(() => this._srcLocked = false))
-            .subscribe(x => this._dataService.url$.next(x));
-    }
 
     @Input() public title: string | undefined;
     @Input() public width: number = 512;
     @Input() public height: number = 512;
+    @Input() public id: string | undefined;
 
     public dragAllowed: boolean = false;
     public dragDenied: boolean = false;
@@ -77,8 +78,8 @@ export class ImageInputComponent implements AfterViewInit, ControlValueAccessor 
     @ViewChild('input')
     input: ElementRef<HTMLInputElement> | undefined;
 
-    public writeValue(src: string): void {
-        this.src = src;
+    public writeValue(url: string): void {
+        // Readonly
     }
 
     public registerOnChange(fn: (value: string) => void): void {
@@ -91,6 +92,10 @@ export class ImageInputComponent implements AfterViewInit, ControlValueAccessor 
 
     public setDisabledState?(_: boolean): void {
         // Not implemented.
+    }
+
+    public async clear(): Promise<void> {
+        await this._dataService.delete();;
     }
 
     private async onFileChange(): Promise<void> {
