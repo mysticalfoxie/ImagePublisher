@@ -47,6 +47,7 @@ export class ImageInputComponent implements OnInit, AfterViewInit, ControlValueA
         const url = await this._dbService.refreshBlobUrl();
         if (!url) return;
         this._dataService.url$.next(url);
+        await this._dataService.readFileInformations();
     }
 
     public ngAfterViewInit(): void {
@@ -95,7 +96,14 @@ export class ImageInputComponent implements OnInit, AfterViewInit, ControlValueA
     }
 
     public async clear(): Promise<void> {
-        await this._dataService.delete();;
+        await this._dataService.delete();
+    }
+
+    public clearFilePicker(): void {
+        if (!this.input?.nativeElement) return;
+
+        // @ts-ignore
+        this.input.nativeElement.value = null;
     }
 
     private async onFileChange(): Promise<void> {
