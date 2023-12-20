@@ -9,59 +9,26 @@
         <app-image-input #image title="Image" formControlName="image" id="image"></app-image-input>
     </div>
 
-    <div class="row txt-inputs">
-        <div
-            class="label"
-            [class.focused]="titleFocused">
-            <mat-icon>title</mat-icon>
-            <span>Title</span>
-        </div>
-        <mat-form-field
-            class="no-subscript">
-            <input
-                matInput
-                formControlName="title"
-                (focus)="titleFocused = true"
-                (blur)="titleFocused = false"
-                placeholder="Title">
-        </mat-form-field>
-    </div>
+    <app-label-input
+        icon="title"
+        formControlName="title"
+        placeholder="Title"
+        label="Title">
+    </app-label-input>
 
-    <div class="row txt-inputs">
-        <div class="label"
-             [class.focused]="descriptionFocused">
-            <mat-icon>subtitles</mat-icon>
-            <span>Description</span>
-        </div>
-        <mat-form-field
-            class="no-subscript">
-        <textarea
-            matInput
-            formControlName="description"
-            cdkTextareaAutosize
-            cdkAutosizeMinRows="1"
-            cdkAutosizeMaxRows="12"
-            placeholder="Description"
-            (focus)="descriptionFocused = true"
-            (blur)="descriptionFocused = false"
-        ></textarea>
-        </mat-form-field>
-    </div>
+    <app-label-input
+        icon="subtitles"
+        formControlName="description"
+        placeholder="Description"
+        [textAreaMinRows]="1"
+        [textAreaMaxRows]="12"
+        [isTextarea]="true"
+        label="Description">
+    </app-label-input>
 
-    <div class="row txt-inputs">
-        <div class="label"
-             [class.focused]="tagsFocused">
-            <mat-icon>sell</mat-icon>
-            <span>Tags</span>
-        </div>
-        <mat-form-field
-            class="no-subscript">
-            <input
-                matInput
-                formControlName="tags"
-                (focus)="tagsFocused = true"
-                (blur)="tagsFocused = false"
-                placeholder="Tags">
-        </mat-form-field>
-    </div>
-</form>
+    <app-label-input
+        icon="sell"
+        formControlName="tags"
+        placeholder="Tags"
+        label="Tags">
+    </app-label-input>

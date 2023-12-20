@@ -1,0 +1,31 @@
+<div
+    class="label"
+    [class.focused]="focused">
+    <mat-icon>{{ icon }}</mat-icon>
+    <span>{{ label }}</span>
+</div>
+
+<mat-form-field
+    class="no-subscript">
+    <textarea
+        *ngIf="isTextarea"
+        #textarea
+        matInput
+        cdkTextareaAutosize
+        [cdkAutosizeMinRows]="textAreaMinRows || 3"
+        [cdkAutosizeMaxRows]="textAreaMaxRows || 12"
+        (focus)="focused = true"
+        (blur)="focused = false"
+        (input)="value$.next(textarea.value)"
+        [placeholder]="placeholder || ''"
+    ></textarea>
+
+    <input
+        *ngIf="!isTextarea"
+        #input
+        matInput
+        (focus)="focused = true"
+        (blur)="focused = false"
+        (input)="value$.next(input.value)"
+        [placeholder]="placeholder || ''">
+</mat-form-field>

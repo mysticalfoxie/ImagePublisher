@@ -1,0 +1,26 @@
+:host {
+    display: flex;
+    gap: 12px;
+
+    div.label {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        background: #404040;
+        padding: 4px 12px;
+        border-radius: 12px;
+        min-width: 150px;
+    }
+
+    div.label.focused {
+        background: var(--primary);
+    }
+
+    textarea {
+        resize: vertical;
+    }
+
+    mat-form-field, textarea {
+        flex: 1;
+    }
+}
