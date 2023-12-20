@@ -38,7 +38,7 @@ export class EditorDataService {
         this.form.data$.next(model);
     }
 
-    public clear() {
-        this.form.clear();
+    public getValue(): EditorModel | null {
+        return this.form.data$.value;
     }
 }

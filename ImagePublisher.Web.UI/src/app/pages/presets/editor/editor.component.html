@@ -9,7 +9,7 @@
         <button mat-icon-button (click)="service.clear();">
             <mat-icon>delete</mat-icon>
         </button>
-        <button mat-icon-button>
+        <button mat-icon-button (click)="create$.next(null);">
             <mat-icon>done</mat-icon>
         </button>
     </div>
@@ -37,30 +37,18 @@
     </mat-expansion-panel>
 
     <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            Pinterest
-        </mat-expansion-panel-header>
-
-        <ng-template matExpansionPanelContent>
-        </ng-template>
+        <mat-expansion-panel-header>Pinterest</mat-expansion-panel-header>
+        <ng-template matExpansionPanelContent></ng-template>
     </mat-expansion-panel>
 
     <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            Instagram
-        </mat-expansion-panel-header>
-
-        <ng-template matExpansionPanelContent>
-        </ng-template>
+        <mat-expansion-panel-header>Instagram</mat-expansion-panel-header>
+        <ng-template matExpansionPanelContent></ng-template>
     </mat-expansion-panel>
 
     <mat-expansion-panel>
-        <mat-expansion-panel-header>
-            Facebook
-        </mat-expansion-panel-header>
-
-        <ng-template matExpansionPanelContent>
-        </ng-template>
+        <mat-expansion-panel-header>Facebook</mat-expansion-panel-header>
+        <ng-template matExpansionPanelContent></ng-template>
     </mat-expansion-panel>
 
 </mat-accordion>

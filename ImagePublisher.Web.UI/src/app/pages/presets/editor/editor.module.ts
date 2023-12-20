@@ -10,6 +10,7 @@ import {GeneralPresetEditorComponent} from "./components/general/general-preset-
 import {AppComponentsModule} from "../../../modules/components.module";
 import {CommonModule, NgIf} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {EditorService} from "./editor.service";
 
 @NgModule({
     declarations: [
@@ -25,7 +26,10 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
         FormsModule,
         ReactiveFormsModule,
     ],
-    providers: [EditorDataService],
+    providers: [
+        EditorService,
+        EditorDataService,
+    ],
 })
 export class EditorModule {
 

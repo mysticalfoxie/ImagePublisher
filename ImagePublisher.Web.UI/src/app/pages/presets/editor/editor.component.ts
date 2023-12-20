@@ -1,5 +1,8 @@
 import {Component, ViewEncapsulation} from "@angular/core";
 import {EditorDataService} from "./editor-data.service";
+import {filter, from, map, Subject, switchMap} from "rxjs";
+import {Router} from "@angular/router";
+import {EditorService} from "./editor.service";
 
 @Component({
     selector: 'app-editor',
@@ -9,8 +12,28 @@ import {EditorDataService} from "./editor-data.service";
 })
 export class EditorComponent {
     public constructor(
-        public service: EditorDataService
+        public service: EditorService,
+        private _dataService: EditorDataService,
+        private _router: Router
     ) {
-        this.service.load();
+        this._dataService.load();
+        this.subscribeCreateButton();
+    }
+
+    public readonly create$ = new Subject();
+
+    private subscribeCreateButton(): void {
+        this.create$
+            .pipe(
+                map(() => this._dataService.getValue()),
+                filter(x => !!x),
+                switchMap(x => from(this.service.createPreset(x!))))
+            .subscribe({
+                next: async () => await this._router.navigate(['/', 'presets']),
+                error: err => {
+                    console.error(err);
+                    this.subscribeCreateButton();
+                }
+            });
     }
 }

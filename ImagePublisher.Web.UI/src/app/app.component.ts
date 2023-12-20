@@ -2,6 +2,7 @@ import {AfterViewInit, Component} from '@angular/core';
 import {NavigationEnd, Router} from "@angular/router";
 import {filter, map, Subject} from "rxjs";
 import {ConfirmService} from "./modules/confirm/confirm.service";
+import {environment} from "./environments/environment";
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,8 @@ export class AppComponent {
         private _router: Router,
         private _confirmService: ConfirmService,
     ) {
+        console.log('Is production mode? ' + environment.isProduction);
+
         this._router.events
             .pipe(
                 filter(x => x instanceof NavigationEnd),

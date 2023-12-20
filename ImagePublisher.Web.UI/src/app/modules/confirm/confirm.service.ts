@@ -5,7 +5,9 @@ import {firstValueFrom} from "rxjs";
 
 @Injectable()
 export class ConfirmService {
-    constructor (private _dialogService: MatDialog) {
+    public constructor (
+        private _dialogService: MatDialog
+    ) {
 
     }
 

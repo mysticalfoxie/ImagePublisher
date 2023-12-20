@@ -8,6 +8,7 @@ import {MaterialModule} from "./modules/material.module";
 import {ConfirmModule} from "./modules/confirm/confirm.module";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {AppComponentsModule} from "./modules/components.module";
+import {AppControllersModule} from "./modules/controllers.module";
 
 @NgModule({
     declarations: [
@@ -16,6 +17,7 @@ import {AppComponentsModule} from "./modules/components.module";
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
+        AppControllersModule,
         AppComponentsModule,
         AppRoutingModule,
         MaterialModule,
