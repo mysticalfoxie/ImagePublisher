@@ -1,75 +1,80 @@
-<div>
-    <span>WebSocket State:</span>
-    <span id="WebSocketState">Disconnected</span>
-    <button>Connect</button>
-    <button>Disconnect</button>
-</div>
+<form [formGroup]="form">
 
-<button>Login to DeviantArt</button>
-<div>
-    <span>Login State:</span>
-    <span id="DALoginState">Unknown</span>
-</div>
-<button>Login to DeviantArt</button>
+    <div>
+        <mat-checkbox formControlName="custom_title">Custom Title</mat-checkbox>
+        <app-label-input
+            icon="title"
+            formControlName="title"
+            placeholder="Custom DeviantArt Title"
+            label="Custom Title">
+        </app-label-input>
+    </div>
 
-<div id="DAAuthorizationState">Unknown</div>
-<button>Authorize this App to access your DeviantArt Account</button>
-<button>Check if the App has access to your DeviantArt Account</button>
+    <div>
+        <mat-checkbox formControlName="custom_description">Custom Description</mat-checkbox>
+        <app-label-input
+            icon="subtitles"
+            formControlName="description"
+            placeholder="Custom DeviantArt Description"
+            [textAreaMinRows]="1"
+            [textAreaMaxRows]="12"
+            [isTextarea]="true"
+            label="Description">
+        </app-label-input>
+    </div>
 
-<input type="file" placeholder="Your upload file">
-<input type="text" placeholder="Tags">
+    <div>
+        <mat-checkbox formControlName="custom_tags">Custom Tags</mat-checkbox>
+        <app-label-input
+            icon="sell"
+            formControlName="tags"
+            placeholder="Custom DeviantArt Tags"
+            label="Tags">
+        </app-label-input>
+    </div>
 
-<input type="text" placeholder="Title">
-<input type="text" placeholder="Description">
+    <app-label-input
+        icon="face_6"
+        formControlName="character"
+        placeholder="Character Name"
+        label="Character">
+    </app-label-input>
 
-<input type="checkbox" placeholder="Has Character">
-<input type="text" placeholder="Character">
 
-<input type="checkbox" placeholder="Has Location">
-<input type="text" placeholder="Location">
+    <app-label-input
+        icon="pin_drop"
+        formControlName="location"
+        placeholder="Location"
+        label="Location">
+    </app-label-input>
 
-<input type="checkbox" placeholder="Is Mature">
 
-<input type="checkbox" placeholder="Is AI Image">
+    <mat-checkbox formControlName="mature">Mature Content</mat-checkbox>
 
-<button>Logout of DeviantArt</button>
+</form>
+
+
+<!--<div>-->
+<!--    <span>WebSocket State:</span>-->
+<!--    <span id="WebSocketState">Disconnected</span>-->
+<!--    <button>Connect</button>-->
+<!--    <button>Disconnect</button>-->
+<!--</div>-->
+
+<!--<button>Login to DeviantArt</button>-->
+<!--<div>-->
+<!--    <span>Login State:</span>-->
+<!--    <span id="DALoginState">Unknown</span>-->
+<!--</div>-->
+<!--<button>Login to DeviantArt</button>-->
+
+<!--<div id="DAAuthorizationState">Unknown</div>-->
+<!--<button>Authorize this App to access your DeviantArt Account</button>-->
+<!--<button>Check if the App has access to your DeviantArt Account</button>-->
+
+<!--<button>Logout of DeviantArt</button>-->
 
 <!--
 <button>reload</button>
 <iframe href="http://192.168.0.174:2200">Loading ...</iframe>
 -->
-
-
-<!--<form [formGroup]="form">-->
-
-<!--    <mat-checkbox #seperatedImages formControlName="hdld">Custom Title</mat-checkbox>-->
-
-<!--    <app-label-input-->
-<!--        icon="title"-->
-<!--        formControlName="title"-->
-<!--        placeholder="Custom DeviantArt Title"-->
-<!--        label="Custom Title">-->
-<!--    </app-label-input>-->
-
-<!--    <mat-checkbox #seperatedImages formControlName="hdld">Custom Description</mat-checkbox>-->
-<!--    -->
-<!--    <app-label-input-->
-<!--        icon="subtitles"-->
-<!--        formControlName="description"-->
-<!--        placeholder="Description"-->
-<!--        [textAreaMinRows]="1"-->
-<!--        [textAreaMaxRows]="12"-->
-<!--        [isTextarea]="true"-->
-<!--        label="Description">-->
-<!--    </app-label-input>-->
-
-<!--    <mat-checkbox #seperatedImages formControlName="hdld">Custom Tags</mat-checkbox>-->
-
-<!--    <app-label-input-->
-<!--        icon="sell"-->
-<!--        formControlName="tags"-->
-<!--        placeholder="Tags"-->
-<!--        label="Tags">-->
-<!--    </app-label-input>-->
-
-<!--</form>-->

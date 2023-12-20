@@ -31,6 +31,8 @@ export class LabelInputComponent implements ControlValueAccessor {
     @Input() public textAreaMinRows: number | undefined;
     @Input() public textAreaMaxRows: number | undefined;
 
+    public disabled: boolean = false;
+
     private _onChanged: ((value: string | null | undefined) => void) | undefined;
     private _onTouched: (() => void) | undefined;
     private _touched: boolean = false;
@@ -58,5 +60,9 @@ export class LabelInputComponent implements ControlValueAccessor {
 
     public writeValue(value: string | null): void {
         this.value$.next(value);
+    }
+
+    public setDisabledState(value: boolean) {
+        this.disabled = value;
     }
 }

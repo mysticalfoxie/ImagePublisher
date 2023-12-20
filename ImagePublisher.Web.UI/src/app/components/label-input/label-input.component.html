@@ -1,5 +1,6 @@
 <div
     class="label"
+    [class.disabled]="disabled"
     [class.focused]="focused">
     <mat-icon>{{ icon }}</mat-icon>
     <span>{{ label }}</span>
@@ -12,6 +13,7 @@
         #textarea
         matInput
         cdkTextareaAutosize
+        [disabled]="disabled"
         [cdkAutosizeMinRows]="textAreaMinRows || 3"
         [cdkAutosizeMaxRows]="textAreaMaxRows || 12"
         (focus)="focused = true"
@@ -24,6 +26,7 @@
         *ngIf="!isTextarea"
         #input
         matInput
+        [disabled]="disabled"
         (focus)="focused = true"
         (blur)="focused = false"
         (input)="value$.next(input.value)"

@@ -1,0 +1,13 @@
+app-da-preset-editor {
+    > form {
+        margin-top: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+        > div {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}
