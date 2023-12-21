@@ -1,6 +1,7 @@
 import {Component, ViewEncapsulation} from "@angular/core";
 import {EditorDataService} from "../../editor-data.service";
 import {DAPresetForm} from "../../forms/da-preset.form";
+import {GeneralPresetForm} from "../../forms/general-preset.form";
 
 @Component({
     selector: 'app-da-preset-editor',
@@ -17,5 +18,9 @@ export class DAPresetEditorComponent {
 
     public get form(): DAPresetForm {
         return this._editorService.form.deviantart;
+    }
+
+    public get general(): GeneralPresetForm {
+        return this._editorService.form.general;
     }
 }

@@ -14,6 +14,7 @@
         matInput
         cdkTextareaAutosize
         [disabled]="disabled"
+        [value]="(isTextarea ? value$.value : textarea.value) || ''"
         [cdkAutosizeMinRows]="textAreaMinRows || 3"
         [cdkAutosizeMaxRows]="textAreaMaxRows || 12"
         (focus)="focused = true"
@@ -27,6 +28,7 @@
         #input
         matInput
         [disabled]="disabled"
+        [value]="(!isTextarea ? value$.value : input.value) || ''"
         (focus)="focused = true"
         (blur)="focused = false"
         (input)="value$.next(input.value)"

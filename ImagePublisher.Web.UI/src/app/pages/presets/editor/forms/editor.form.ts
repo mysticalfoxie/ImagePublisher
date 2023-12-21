@@ -1,7 +1,9 @@
+// noinspection SpellCheckingInspection
+
 import {FormGroup} from "@angular/forms";
 import {BehaviorSubject, map, Subject} from "rxjs";
 import {GeneralPresetForm} from "./general-preset.form";
-import {EditorModel} from "../../../../models/editor.model";
+import {PresetModel} from "../../../../models/preset.model";
 import {DAPresetForm} from "./da-preset.form";
 import {FBPresetForm} from "./fb-preset.form";
 import {IGPresetForm} from "./ig-preset.form";
@@ -24,11 +26,11 @@ export class EditorForm extends FormGroup {
         this.pinterest = this.get('pinterest') as PTPresetForm;
 
         this.valueChanges
-            .pipe(map(() => this.getRawValue() as EditorModel))
+            .pipe(map(() => this.getRawValue() as PresetModel))
             .subscribe(x => this.data$.next(x));
     }
 
-    public readonly data$ = new BehaviorSubject<EditorModel | null>(null);
+    public readonly data$ = new BehaviorSubject<PresetModel | null>(null);
     public readonly clear$ = new Subject();
 
     public general: GeneralPresetForm;
@@ -37,7 +39,7 @@ export class EditorForm extends FormGroup {
     public facebook: FBPresetForm;
     public pinterest: PTPresetForm;
 
-    public initialize(model: EditorModel | null = null): void {
+    public initialize(model: PresetModel | null = null): void {
         this.general.title.setValue(model?.general.title || '');
         this.general.description.setValue(model?.general.description || '');
         this.general.tags.setValue(model?.general.tags || '');
@@ -46,9 +48,9 @@ export class EditorForm extends FormGroup {
         this.general.ldImage.setValue(model?.general.ldImage || '');
         this.general.image.setValue(model?.general.image || '');
 
-        this.deviantart.title.setValue(model?.deviantart.title ? model?.deviantart.title : model?.general.title || '');
-        this.deviantart.description.setValue(model?.deviantart.description ? model?.deviantart.description : model?.general.description || '');
-        this.deviantart.tags.setValue(model?.deviantart.tags ? model?.deviantart.tags : model?.general.tags || '');
+        this.deviantart.title.setValue(model?.deviantart.title || '');
+        this.deviantart.description.setValue(model?.deviantart.description || '');
+        this.deviantart.tags.setValue(model?.deviantart.tags || '');
         this.deviantart.character.setValue(model?.deviantart.character || '');
         this.deviantart.location.setValue(model?.deviantart.location || '');
     }

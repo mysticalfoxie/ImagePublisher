@@ -5,7 +5,7 @@
         <app-label-input
             icon="title"
             formControlName="title"
-            placeholder="Custom DeviantArt Title"
+            [placeholder]="general.title.value || 'Custom Title'"
             label="Custom Title">
         </app-label-input>
     </div>
@@ -15,7 +15,7 @@
         <app-label-input
             icon="subtitles"
             formControlName="description"
-            placeholder="Custom DeviantArt Description"
+            [placeholder]="general.description.value || 'Custom Description'"
             [textAreaMinRows]="1"
             [textAreaMaxRows]="12"
             [isTextarea]="true"
@@ -28,7 +28,7 @@
         <app-label-input
             icon="sell"
             formControlName="tags"
-            placeholder="Custom DeviantArt Tags"
+            [placeholder]="general.tags.value || 'Custom Tags'"
             label="Tags">
         </app-label-input>
     </div>

@@ -1,9 +1,8 @@
 import {Injectable} from "@angular/core";
 import {EditorDataService} from "./editor-data.service";
 import {PresetsController} from "../../../controllers/presets.controller";
-import {EditorModel} from "../../../models/editor.model";
+import {PresetModel} from "../../../models/preset.model";
 import {firstValueFrom} from "rxjs";
-import {FormBuilder} from "@angular/forms";
 
 @Injectable()
 export class EditorService {
@@ -14,14 +13,10 @@ export class EditorService {
 
     }
 
-    private async getBlobFileByUrl(url: string): Promise<Blob> {
-         const response = await fetch(url);
-         return await response.blob();
-    }
-
-    public async createPreset(data: EditorModel): Promise<void> {
+    public async createPreset(data: PresetModel): Promise<void> {
         const request$ = this._controller.createPreset(data);
         await firstValueFrom(request$);
+        this.clear();
     }
 
     public clear() {

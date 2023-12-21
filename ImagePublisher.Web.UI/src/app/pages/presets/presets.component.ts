@@ -1,44 +1,43 @@
 import {Component, ViewEncapsulation} from "@angular/core";
-import {MatTableDataSource} from "@angular/material/table";
 import {filter, from, Subject, switchMap} from "rxjs";
 import {ConfirmService} from "../../modules/confirm/confirm.service";
-
-export interface Element {
-    id: number;
-    image: string;
-    title: string;
-    description: string;
-    createdAt: string;
-}
-
-const ELEMENTS: Element[] = [
-    {id: 0, image: '/assets/00014-349608318.png', title: 'Cute fawzy booo', description: 'This faaaaaaaaaaaaaaawzy is ssooo incredibly cute as fuck omg yea i love her she is so cute i wanna hug her, shes screeking so cute and looking so cute omg omg omg i like her a lot with her little fur ears maaawhwhhhhwhwhwhhwhw fawzy!!', createdAt: '12.09.2023 - 09:24 Uhr' },
-    {id: 1, image: '/assets/00014-349608318.png', title: 'Another faaawzy booo', description: 'This faaaaaaaaaaaaaaawzy is ssooo incredibly cute as fuck omg yea i love her she is so cute i wanna hug her, shes screeking so cute and looking so cute omg omg omg i like her a lot with her little fur ears maaawhwhhhhwhwhwhhwhw fawzy!!', createdAt: '12.09.2023 - 09:24 Uhr' },
-    {id: 2, image: '/assets/00014-349608318.png', title: 'Cute lil foxiie', description: 'This faaaaaaaaaaaaaaawzy is ssooo incredibly cute as fuck omg yea i love her she is so cute i wanna hug her, shes screeking so cute and looking so cute omg omg omg i like her a lot with her little fur ears maaawhwhhhhwhwhwhhwhw fawzy!!', createdAt: '12.09.2023 - 09:24 Uhr' },
-    {id: 3, image: '/assets/00014-349608318.png', title: 'Cute Fox UwU', description: 'This faaaaaaaaaaaaaaawzy is ssooo incredibly cute as fuck omg yea i love her she is so cute i wanna hug her, shes screeking so cute and looking so cute omg omg omg i like her a lot with her little fur ears maaawhwhhhhwhwhwhhwhw fawzy!!', createdAt: '12.09.2023 - 09:24 Uhr' },
-    {id: 4, image: '/assets/00014-349608318.png', title: 'Is this me <3 OMG', description: 'This faaaaaaaaaaaaaaawzy is ssooo incredibly cute as fuck omg yea i love her she is so cute i wanna hug her, shes screeking so cute and looking so cute omg omg omg i like her a lot with her little fur ears maaawhwhhhhwhwhwhhwhw fawzy!!', createdAt: '12.09.2023 - 09:24 Uhr' },
-    {id: 5, image: '/assets/00014-349608318.png', title: 'This should be the absolut longest text that i image', description: 'This faaaaaaaaaaaaaaawzy is ssooo incredibly cute as fuck omg yea i love her she is so cute i wanna hug her, shes screeking so cute and looking so cute omg omg omg i like her a lot with her little fur ears maaawhwhhhhwhwhwhhwhw fawzy!!', createdAt: '12.09.2023 - 09:24 Uhr' },
-];
+import {PresetsService} from "./presets.service";
 
 @Component({
     selector: 'app-presets-component',
     templateUrl: 'presets.component.html',
     styleUrls: ['presets.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    providers: [PresetsService]
 })
 export class PresetsComponent {
     constructor (
-        private _confirmService: ConfirmService
+        public service: PresetsService,
+        private _confirmService: ConfirmService,
     ) {
         this.subscribeDelete();
+        this.service.loadPresets();
     }
 
-    public displayedColumns: string[] = ['image', 'title', 'description', 'timestamp', 'actions' ];
-    public dataSource = new MatTableDataSource(ELEMENTS);
+    public displayedColumns: string[] = [ 'image', 'title', 'description', 'tags', 'timestamp', 'actions' ];
 
     public edit$ = new Subject<number>();
     public delete$ = new Subject<number>();
     public upload$ = new Subject<number>();
+
+    public sanitizeUTCDate(dateString: string) {
+        const date = new Date(dateString);
+        const options: Intl.DateTimeFormatOptions = {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
+        };
+
+        const locale = navigator?.languages?.length ? navigator.languages[0] : navigator.language;
+        return date.toLocaleTimeString(locale, options);
+    }
 
     public subscribeDelete(): void {
         this.delete$

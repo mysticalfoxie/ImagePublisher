@@ -1,3 +1,5 @@
+<!--suppress TypeScriptUnresolvedReference  -- it just messes up the types... sees errors where there are none... -->
+
 <div>
     <div>
         <span class="title">Saved Presets</span>
@@ -11,44 +13,47 @@
     </div>
 </div>
 
-<table mat-table [dataSource]="dataSource">
+<table mat-table [dataSource]="(service.presets$ | async)!">
 
     <ng-container matColumnDef="image">
         <th mat-header-cell *matHeaderCellDef>Image</th>
-        <td mat-cell *matCellDef="let element">
-            <img [ngSrc]="element.image" alt="" width="160" height="90" />
+        <td mat-cell *matCellDef="let preset">
+            <img [ngSrc]="preset.thumbnail" alt="" width="160" height="90" />
         </td>
     </ng-container>
 
     <ng-container matColumnDef="title">
         <th mat-header-cell *matHeaderCellDef>Title</th>
-        <td mat-cell *matCellDef="let element">{{element.title}}</td>
+        <td mat-cell *matCellDef="let preset">{{preset.title}}</td>
     </ng-container>
 
-    <!-- Weight Column -->
     <ng-container matColumnDef="description">
         <th mat-header-cell *matHeaderCellDef>Description</th>
-        <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+        <td mat-cell *matCellDef="let preset"> {{preset.description}} </td>
     </ng-container>
 
-    <!-- Weight Column -->
+    <ng-container matColumnDef="tags">
+        <th mat-header-cell *matHeaderCellDef>Tags</th>
+        <td mat-cell *matCellDef="let preset"> {{preset.tags}} </td>
+    </ng-container>
+
     <ng-container matColumnDef="timestamp">
         <th mat-header-cell *matHeaderCellDef>Created at</th>
-        <td mat-cell *matCellDef="let element"> {{element.createdAt}} </td>
+        <td mat-cell *matCellDef="let preset"> {{ sanitizeUTCDate(preset.createdAt) }} </td>
     </ng-container>
 
     <!-- Symbol Column -->
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Actions</th>
-        <td mat-cell *matCellDef="let element">
+        <td mat-cell *matCellDef="let preset">
             <div>
-                <button mat-icon-button (click)="edit$.next(element.id)">
+                <button mat-icon-button (click)="edit$.next(preset.id)">
                     <mat-icon>edit</mat-icon>
                 </button>
-                <button mat-icon-button (click)="delete$.next(element.id)">
+                <button mat-icon-button (click)="delete$.next(preset.id)">
                     <mat-icon>delete</mat-icon>
                 </button>
-                <button mat-icon-button (click)="upload$.next(element.id)">
+                <button mat-icon-button (click)="upload$.next(preset.id)">
                     <mat-icon>upload</mat-icon>
                 </button>
             </div>
@@ -56,5 +61,7 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <!--suppress JSUnusedGlobalSymbols -- Cant remove the row here. It's a positional parameter...-->
+    <tr mat-row *matRowDef="let _; columns: displayedColumns;"></tr>
 </table>

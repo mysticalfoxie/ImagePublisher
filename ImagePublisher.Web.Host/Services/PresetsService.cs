@@ -40,8 +40,8 @@ public class PresetsService : IService
             Id = model.Id,
             Title = model.General.Title,
             Description = model.General.Description,
-            TagCount = model.General.Tags.Length,
-            PreviewImageUrl = $"{request.GetDisplayUrl()}/{model.Id}/thumbnail",
+            Tags = model.General.Tags.Split(", ").Length,
+            Thumbnail = $"{request.GetDisplayUrl()}/{model.Id}/thumbnail",
             CreatedAt = DateTime.UtcNow
         };
     }

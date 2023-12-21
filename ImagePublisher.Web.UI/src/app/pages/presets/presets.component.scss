@@ -16,7 +16,7 @@ app-presets-component {
         background: none !important;
 
         img {
-            object-fit: cover;
+            object-fit: contain;
             border-radius: 4px;
             box-shadow: 2px 2px 8px 2px #202020;
         }

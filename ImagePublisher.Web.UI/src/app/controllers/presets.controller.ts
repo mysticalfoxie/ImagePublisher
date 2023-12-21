@@ -1,7 +1,8 @@
 import {Injectable} from "@angular/core";
 import {HttpClientService} from "../services/httpClient.service";
-import {EditorModel} from "../models/editor.model";
+import {PresetModel} from "../models/preset.model";
 import {from, Observable, switchMap} from "rxjs";
+import {PresetMetadataModel} from "../models/preset-metadata.model";
 
 @Injectable()
 export class PresetsController {
@@ -13,13 +14,17 @@ export class PresetsController {
 
     }
 
-    public createPreset(value: EditorModel): Observable<void> {
+    public getAll(): Observable<PresetMetadataModel[]> {
+        return this._client.get<PresetMetadataModel[]>(this._path);
+    }
+
+    public createPreset(value: PresetModel): Observable<void> {
         const formData$ = from(this.loadImagesToFormData(value))
         return formData$.pipe(
             switchMap(x => this._client.post<void>(this._path, x)));
     }
 
-    private async loadImagesToFormData(data: EditorModel): Promise<FormData> {
+    private async loadImagesToFormData(data: PresetModel): Promise<FormData> {
         const formData = new FormData();
 
         if (!data.general.hdld) {
