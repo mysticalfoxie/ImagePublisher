@@ -3,6 +3,7 @@ import {EditorDataService} from "./editor-data.service";
 import {PresetsController} from "../../../controllers/presets.controller";
 import {EditorModel} from "../../../models/editor.model";
 import {firstValueFrom} from "rxjs";
+import {FormBuilder} from "@angular/forms";
 
 @Injectable()
 export class EditorService {
@@ -11,6 +12,11 @@ export class EditorService {
         private _controller: PresetsController
     ) {
 
+    }
+
+    private async getBlobFileByUrl(url: string): Promise<Blob> {
+         const response = await fetch(url);
+         return await response.blob();
     }
 
     public async createPreset(data: EditorModel): Promise<void> {

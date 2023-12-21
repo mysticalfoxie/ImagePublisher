@@ -14,8 +14,6 @@ export class AppComponent {
         private _router: Router,
         private _confirmService: ConfirmService,
     ) {
-        console.log('Is production mode? ' + environment.isProduction);
-
         this._router.events
             .pipe(
                 filter(x => x instanceof NavigationEnd),

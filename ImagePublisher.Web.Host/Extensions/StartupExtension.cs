@@ -1,3 +1,4 @@
+using ImagePublisher.Web.Host.Interfaces;
 using ImagePublisher.Web.Host.Middleware;
 using Microsoft.Extensions.FileProviders;
 
@@ -15,6 +16,32 @@ public static class StartupExtension
     {
         services.AddTransient<IndexFileMiddleware>();
         services.AddTransient<StaticRootFilesMiddleware>();
+    }
+
+    public static void AddServices(this IServiceCollection collection)
+    {
+        var assembly = typeof(Program).Assembly;
+        var serviceType = typeof(IService);
+        var services = assembly
+            .GetTypes()
+            .Where(x => x.IsAssignableTo(serviceType))
+            .Where(x => x.IsClass);
+        
+        foreach (var service in services)
+            collection.AddSingleton(service);
+    }
+
+    public static void AddCorsPolicy(this IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(builder =>
+            {
+                builder.WithOrigins("http://localhost:4200");
+                builder.AllowAnyHeader();
+                builder.AllowAnyMethod();
+            });
+        });
     }
     
     public static void AddStaticAssets(this WebApplication app)

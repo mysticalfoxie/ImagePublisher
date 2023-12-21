@@ -19,6 +19,7 @@ export class HttpClientService {
 
     public post<T>(path: string, data: any): Observable<T> {
         const url = this.getUrlForPath(path);
+        console.log('post to ', url);
         return this._client
             .post(url, data)
             .pipe(map(x => x as T));
@@ -40,7 +41,7 @@ export class HttpClientService {
 
     private getUrlForPath(path: string): string {
         const base = environment.baseUrl.endsWith('/') ? environment.baseUrl.slice(0, environment.baseUrl.length - 2) : environment.baseUrl;
-        const newPath = path.startsWith('/') ? path.slice(1, path.length - 1) : path;
-        return base + newPath;
+        const newPath = path.startsWith('/') ? path : '/' + path;
+        return base + '/api' + newPath;
     }
 }
