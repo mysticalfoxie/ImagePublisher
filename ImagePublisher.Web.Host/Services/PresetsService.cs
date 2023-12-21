@@ -1,7 +1,9 @@
 using System.Drawing;
 using System.Drawing.Imaging;
+using ImagePublisher.Web.Host.Extensions;
 using ImagePublisher.Web.Host.Interfaces;
 using ImagePublisher.Web.Host.Models;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -20,20 +22,18 @@ public class PresetsService : IService
         if (!_presetsFolder.Exists) _presetsFolder.Create();
     }
     
-    public async Task<PresetMetaDataModel> AddPreset(PresetFormData form, PresetModel data)
+    public async Task<PresetMetaDataModel> AddPreset(PresetFormData form, PresetModel data, HttpRequest request)
     {
         data.Id = Guid.NewGuid();
-        var metadata = CreateMetaData(data);
+        var metadata = CreateMetaData(data, request);
         var directory = _presetsFolder.CreateSubdirectory(data.Id.ToString());
         var tasks = await GetPresetCreationTasks(data, metadata, form, directory); // ✨ Multi-Threading UwU ✨
         await Task.WhenAll(tasks);
         
-        //metadata.PreviewImageUrl = "http"
-        
         return metadata;
     }
 
-    private static PresetMetaDataModel CreateMetaData(PresetModel model)
+    private static PresetMetaDataModel CreateMetaData(PresetModel model, HttpRequest request)
     {
         return new PresetMetaDataModel
         {
@@ -41,6 +41,7 @@ public class PresetsService : IService
             Title = model.General.Title,
             Description = model.General.Description,
             TagCount = model.General.Tags.Length,
+            PreviewImageUrl = $"{request.GetDisplayUrl()}/{model.Id}/thumbnail",
             CreatedAt = DateTime.UtcNow
         };
     }
@@ -142,6 +143,21 @@ public class PresetsService : IService
 
     public bool TryOpenThumbnailStream(Guid id, out FileStream stream, out IActionResult error)
     {
+        return this.TryOpenFileStream(id, "thumbnail.jpeg", out stream, out error);
+    }
+
+    public bool TryOpenHDImageStream(Guid id, out FileStream stream, out IActionResult error)
+    {
+        return this.TryOpenFileStream(id, "hd_image.png", out stream, out error);
+    }
+
+    public bool TryOpenLDImageStream(Guid id, out FileStream stream, out IActionResult error)
+    {
+        return this.TryOpenFileStream(id, "ld_image.png", out stream, out error);
+    }
+    
+    private bool TryOpenFileStream(Guid id, string name, out FileStream stream, out IActionResult error)
+    {
         var directory = _presetsFolder.GetDirectories().FirstOrDefault(x => x.Name == id.ToString());
         if (directory is null)
         {
@@ -150,9 +166,27 @@ public class PresetsService : IService
             return false;
         }
 
-        var file = directory.GetFiles().First(x => x.Name == "thumbnail.jpeg");
+        var file = directory.GetFiles().First(x => x.Name == name);
         stream = file.OpenRead();
         error = null;
         return true;
+    }
+
+    public PresetMetaDataModel[] GetAllPresets()
+    {
+        return _presetsFolder
+            .GetDirectories()
+            .Where(x => Guid.TryParse(x.Name, out _))
+            .SelectMany(x => x.GetFiles())
+            .Where(x => x.Name == "preset.pmd")
+            .Batch(Environment.ProcessorCount) // Cant open more File-Streams parallel then we have processor cores
+            .Select(x => x
+                .AsParallel()
+                .Select(async y => await File.ReadAllTextAsync(y.FullName))
+                .Select(y => y.Result))
+            .SelectMany(x => x) // We do it AFTERWARDS, to not break the 🌟 Batched Multi Threading ✨
+            .AsParallel() // 🌟 Multi Threading ✨ <3
+            .JsonConvertTo<PresetMetaDataModel>(ignoreErrors: true)
+            .ToArray();
     }
 }
