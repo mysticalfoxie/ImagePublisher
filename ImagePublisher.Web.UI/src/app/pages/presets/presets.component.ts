@@ -1,5 +1,5 @@
 import {Component, ViewEncapsulation} from "@angular/core";
-import {filter, from, Subject, switchMap} from "rxjs";
+import {filter, from, map, Subject, switchMap} from "rxjs";
 import {ConfirmService} from "../../modules/confirm/confirm.service";
 import {PresetsService} from "./presets.service";
 import {Router} from "@angular/router";
@@ -45,8 +45,9 @@ export class PresetsComponent {
     public subscribeDelete(): void {
         this.delete$
             .pipe(
-                switchMap(() => from(this._confirmService.confirm())),
-                filter(x => !!x))
+                switchMap(x => from(this._confirmService.confirm()).pipe(map(y => ({ confirmed: y, id: x })))),
+                filter(x => x.confirmed),
+                switchMap(x => this.service.delete(x.id as string)))
             .subscribe({
                 next: () => {},
                 error: err => {

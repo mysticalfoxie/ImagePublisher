@@ -1,0 +1,38 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    > div {
+        background: #252525;
+        display: flex;
+        align-items: center;
+        border-radius: 12px;
+        padding: 18px 30px;
+        gap: 24px;
+        cursor: pointer;
+        border: 1px solid transparent;
+
+        > div.image {
+            > img {
+                object-fit: contain;
+            }
+        }
+
+        > div.description {
+            display: flex;
+            flex-direction: column;
+            align-self: stretch;
+            gap: 8px;
+        }
+
+        > div.selected {
+            margin-left: auto;
+        }
+    }
+
+    > div.selected {
+        border: 1px solid var(--primary);
+    }
+}
+

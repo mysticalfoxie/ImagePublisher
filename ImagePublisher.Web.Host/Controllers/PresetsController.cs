@@ -60,6 +60,15 @@ public class PresetsController : ControllerBase
         return Ok(metadata);
     }
 
+    [HttpDelete("{id:Guid}")]
+    public IActionResult Delete([FromRoute] Guid id)
+    {
+        if (!_service.FindPresetDirectoryById(id, out var directory, out var error)) return error;
+        directory.Delete(true);
+        
+        return Ok();
+    }
+
     [HttpGet("{id:Guid}/thumbnail")]
     public IActionResult GetThumbnail([FromRoute] Guid id)
     {

@@ -7,13 +7,13 @@
     <div class="items">
         <div class="top">
             <div
-                [class.active]="(path$ | async) == 'presets'"
+                [class.active]="(rootPath$ | async) == 'presets'"
                 [routerLink]="'presets'">
                 <mat-icon>widgets</mat-icon>
                 Presets
             </div>
             <div
-                [class.active]="(path$ | async) == 'upload'"
+                [class.active]="(rootPath$ | async) == 'upload'"
                 [routerLink]="'upload'">
                 <mat-icon>upload</mat-icon>
                 Upload
@@ -23,7 +23,7 @@
         <div class="bottom">
             <mat-divider></mat-divider>
             <div
-                [class.active]="(path$ | async) == 'settings'"
+                [class.active]="(rootPath$ | async) == 'settings'"
                 [routerLink]="'settings'">
                 <mat-icon>settings</mat-icon>
                 Settings

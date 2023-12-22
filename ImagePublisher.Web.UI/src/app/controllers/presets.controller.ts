@@ -58,4 +58,8 @@ export class PresetsController {
     public getById(id: string) {
         return this._client.get<PresetModel>(this._path + '/' + id);
     }
+
+    public delete(id: string) {
+        return this._client.delete(this._path + '/' + id);
+    }
 }

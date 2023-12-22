@@ -1,0 +1,17 @@
+<div *ngFor="let item of (service.presets$ | async)"
+     [class.selected]="item.id == (service.selected$ | async)?.id"
+     (click)="onSelect(item)">
+    <div class="image">
+        <img [src]="item.thumbnail" width="160" height="90" alt="">
+    </div>
+    <div class="description">
+        <span class="title">{{ item.title }}</span>
+        <span class="description">{{ item.description }}</span>
+    </div>
+    <div class="selected">
+        <mat-icon
+            *ngIf="item.id == (service.selected$ | async)?.id"
+            color="primary">check_circle
+        </mat-icon>
+    </div>
+</div>

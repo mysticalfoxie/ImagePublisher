@@ -46,6 +46,21 @@ public class PresetsService : IService
         }
     }
 
+    public bool FindPresetDirectoryById(Guid id, out DirectoryInfo presetDirectory, out IActionResult error)
+    {
+        var directory = _presetsFolder.GetDirectories().FirstOrDefault(x => x.Name == id.ToString());
+        if (directory is null)
+        {
+            error = new NotFoundObjectResult($"There is no preset with id of \"{id}\".");
+            presetDirectory = null;
+            return false;
+        }
+
+        presetDirectory = directory;
+        error = null;
+        return true;
+    }
+
     public bool FindPresetFileById(Guid id, out FileInfo presetFile, out IActionResult error)
     {
         var directory = _presetsFolder.GetDirectories().FirstOrDefault(x => x.Name == id.ToString());

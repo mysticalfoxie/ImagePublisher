@@ -1,1 +1,25 @@
-Upload
+<div>
+    <div>
+        <span *ngIf="!(actionBar.subject$ | async)" class="title">Upload</span>
+        <span *ngIf="(actionBar.subject$ | async)" class="title">Upload • {{ actionBar.subject$.value }}</span>
+    </div>
+    <div>
+        <button
+            mat-icon-button
+            *ngIf="(actionBar.showSelectConfirmButton$ | async)!"
+            [disabled]="(actionBar.selectConfirmButtonDisabled$ | async)!"
+            (click)="actionBar.selectConfirmButtonClicked$.next(null)">
+            <mat-icon>check</mat-icon>
+        </button>
+
+        <button
+            mat-icon-button
+            *ngIf="(actionBar.showStartUploadButton$ | async)!"
+            [disabled]="(actionBar.startUploadButtonDisabled$ | async)!"
+            (click)="actionBar.startUploadButtonClicked$.next(null)">
+            <mat-icon>play_arrow</mat-icon>
+        </button>
+    </div>
+</div>
+
+<router-outlet></router-outlet>

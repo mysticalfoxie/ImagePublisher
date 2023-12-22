@@ -1,0 +1,15 @@
+app-upload-component {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    > div {
+        background-color: #404040;
+        border-radius: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 12px 6px 24px;
+        min-height: 48px;
+    }
+}
