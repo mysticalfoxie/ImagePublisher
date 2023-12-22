@@ -7,7 +7,7 @@ public class PresetModel
 {
     [JsonProperty("id")]
     [JsonPropertyName("id")]
-    public Guid Id { get; set; }
+    public Guid? Id { get; set; }
     
     [JsonProperty("general")]
     [JsonPropertyName("general")]

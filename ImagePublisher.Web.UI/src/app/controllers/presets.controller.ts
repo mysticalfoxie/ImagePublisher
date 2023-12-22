@@ -24,25 +24,38 @@ export class PresetsController {
             switchMap(x => this._client.post<void>(this._path, x)));
     }
 
+    public updatePreset(value: PresetModel): Observable<void> {
+        const formData$ = from(this.loadImagesToFormData(value))
+        return formData$.pipe(
+            switchMap(x => this._client.put<void>(this._path, x)));
+    }
+
     private async loadImagesToFormData(data: PresetModel): Promise<FormData> {
         const formData = new FormData();
 
         if (!data.general.hdld) {
             const generalImageResponse = await fetch(data.general.image);
             const generalImageBlob = await generalImageResponse.blob();
-            formData.append('image', generalImageBlob);
+            const generalImageFile = new File([generalImageBlob], 'image.png', { type: 'image/png' });
+            formData.append('image', generalImageFile);
         } else {
             const ldImageResponse = await fetch(data.general.ldImage);
             const ldImageBlob = await ldImageResponse.blob();
-            formData.append('ldImage', ldImageBlob);
+            const ldImageFile = new File([ldImageBlob], 'ldImage.png', { type: 'image/png' });
+            formData.append('ldImage', ldImageFile);
 
             const hdImageResponse = await fetch(data.general.hdImage);
             const hdImageBlob = await hdImageResponse.blob();
-            formData.append('hdImage', hdImageBlob);
+            const hdImageFile = new File([hdImageBlob], 'hdImage.png', { type: 'image/png' });
+            formData.append('hdImage', hdImageFile);
         }
 
         formData.append('json', JSON.stringify(data));
 
         return formData;
+    }
+
+    public getById(id: string) {
+        return this._client.get<PresetModel>(this._path + '/' + id);
     }
 }

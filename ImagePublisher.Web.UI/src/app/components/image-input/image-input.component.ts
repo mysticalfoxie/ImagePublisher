@@ -79,6 +79,10 @@ export class ImageInputComponent implements OnInit, AfterViewInit, ControlValueA
     @ViewChild('input')
     input: ElementRef<HTMLInputElement> | undefined;
 
+    public async loadFromImageUrl(url: string): Promise<void> {
+        await this._dataService.onManualFileChange(url);
+    }
+
     public writeValue(url: string): void {
         // Readonly
     }

@@ -1,6 +1,6 @@
 // noinspection SpellCheckingInspection
 
-import {FormGroup} from "@angular/forms";
+import {FormControl, FormGroup} from "@angular/forms";
 import {BehaviorSubject, map, Subject} from "rxjs";
 import {GeneralPresetForm} from "./general-preset.form";
 import {PresetModel} from "../../../../models/preset.model";
@@ -12,6 +12,7 @@ import {PTPresetForm} from "./pt-preset.form";
 export class EditorForm extends FormGroup {
     public constructor() {
         super({
+            id: new FormControl(''),
             general: new GeneralPresetForm(),
             deviantart: new DAPresetForm(),
             instagram: new IGPresetForm(),
@@ -19,6 +20,7 @@ export class EditorForm extends FormGroup {
             pinterest: new PTPresetForm()
         });
 
+        this.id = this.get('id') as FormControl<string>;
         this.general = this.get('general') as GeneralPresetForm;
         this.deviantart = this.get('deviantart') as DAPresetForm;
         this.instagram = this.get('instagram') as IGPresetForm;
@@ -30,9 +32,11 @@ export class EditorForm extends FormGroup {
             .subscribe(x => this.data$.next(x));
     }
 
+    public readonly imageLoad$ = new BehaviorSubject<PresetModel | null>(null);
     public readonly data$ = new BehaviorSubject<PresetModel | null>(null);
     public readonly clear$ = new Subject();
 
+    public id: FormControl<string>;
     public general: GeneralPresetForm;
     public deviantart: DAPresetForm;
     public instagram: IGPresetForm;
@@ -40,6 +44,8 @@ export class EditorForm extends FormGroup {
     public pinterest: PTPresetForm;
 
     public initialize(model: PresetModel | null = null): void {
+        this.id.setValue(model?.id || '');
+
         this.general.title.setValue(model?.general.title || '');
         this.general.description.setValue(model?.general.description || '');
         this.general.tags.setValue(model?.general.tags || '');

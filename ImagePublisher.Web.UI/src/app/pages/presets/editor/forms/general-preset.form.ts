@@ -3,6 +3,7 @@ import {FormControl, FormGroup} from "@angular/forms";
 export class GeneralPresetForm extends FormGroup {
     constructor() {
         super({
+            id: new FormControl<string | null>(''),
             title: new FormControl<string | null>(''),
             description: new FormControl<string | null>(''),
             tags: new FormControl<string | null>(''),
@@ -12,6 +13,7 @@ export class GeneralPresetForm extends FormGroup {
             image: new FormControl<string | null>('')
         });
 
+        this.id = this.get('id') as FormControl<string | null>;
         this.title = this.get('title') as FormControl<string | null>;
         this.description = this.get('description') as FormControl<string | null>;
         this.tags = this.get('tags') as FormControl<string | null>;
@@ -21,6 +23,7 @@ export class GeneralPresetForm extends FormGroup {
         this.image = this.get('image') as FormControl<string | null>;
     }
 
+    public id: FormControl<string | null>;
     public title: FormControl<string | null>;
     public description: FormControl<string | null>;
     public tags: FormControl<string | null>;

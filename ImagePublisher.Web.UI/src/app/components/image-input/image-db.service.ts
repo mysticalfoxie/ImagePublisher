@@ -97,7 +97,7 @@ export class ImageDBService {
     }
 
     public static getIdByUrl(url: string): string {
-        const regex = new RegExp("(\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12})$");
+        const regex = new RegExp("([\\w\\d]{8}-[\\w\\d]{4}-[\\w\\d]{4}-[\\w\\d]{4}-[\\w\\d]{12})$");
         const match = regex.exec(url)?.[1];
         if (!match)
             throw new Error("Could not determine a GUID from the url " + url);

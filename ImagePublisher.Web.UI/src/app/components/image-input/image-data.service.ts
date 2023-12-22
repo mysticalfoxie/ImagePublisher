@@ -59,7 +59,7 @@ export class ImageDataService {
                 await this._dbService.deleteImage(this.url$.value);
             }
 
-            const image = await this._loaderService.loadImage(file);
+            const image = await this._loaderService.loadImageFromFile(file);
             this.url$.next(image.blobUrl);
             await this._dbService.saveImage(image);
             await this.readFileInformations();
@@ -69,7 +69,26 @@ export class ImageDataService {
         }
     }
 
-    async readFileInformations(): Promise<void> {
+    public async onManualFileChange(url: string): Promise<void> {
+        try {
+            this.loading = true;
+
+            if (this.url$.value) {
+                this.ui?.clearFilePicker();
+                await this._dbService.deleteImage(this.url$.value);
+            }
+
+            const image = await this._loaderService.loadImageFromUrl(url);
+            this.url$.next(image.blobUrl);
+            await this._dbService.saveImage(image);
+            await this.readFileInformations();
+        }
+        finally {
+            this.loading = false;
+        }
+    }
+
+    public async readFileInformations(): Promise<void> {
         if (!this.url$.value) return;
         const image = await this._dbService.getImage(this.url$.value);
         this.filename = image.filename;

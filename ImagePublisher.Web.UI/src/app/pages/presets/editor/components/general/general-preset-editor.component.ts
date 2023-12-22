@@ -16,6 +16,19 @@ export class GeneralPresetEditorComponent {
             await this.hdImageInput?.clear();
             await this.ldImageInput?.clear();
             await this.imageInput?.clear();
+        });
+
+        this._dataService.form.imageLoad$.subscribe(x => {
+            if (!x?.general || !this.hdImageInput || !this.ldImageInput || !this.imageInput) return;
+            if (x.general.hdld) {
+                if (x.general.hdImage)
+                    this.hdImageInput?.loadFromImageUrl(x?.general.hdImage);
+                if (x.general.ldImage)
+                    this.ldImageInput?.loadFromImageUrl(x?.general.ldImage);
+            } else {
+                if (x.general.image)
+                    this.imageInput?.loadFromImageUrl(x?.general.image);
+            }
         })
     }
 

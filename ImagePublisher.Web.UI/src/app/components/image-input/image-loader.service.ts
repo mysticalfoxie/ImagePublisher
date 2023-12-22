@@ -5,7 +5,7 @@ import {ImageDBService} from "./image-db.service";
 @Injectable()
 export class ImageLoaderService {
 
-    private loadImageData(file: File): Promise<string> {
+    private loadImageData(file: File | Blob): Promise<string> {
         return new Promise<string>(async (resolve, reject) => {
             const reader = new FileReader();
             reader.onerror = e => reject(e);
@@ -29,7 +29,7 @@ export class ImageLoaderService {
         return URL.createObjectURL(blob);
     }
 
-    public async loadImage(file: File): Promise<ImageDataModel> {
+    public async loadImageFromFile(file: File | Blob): Promise<ImageDataModel> {
         const base64 = await this.loadImageData(file);
         const url = await this.loadBlobUrl(base64);
         const image = await this.loadPseudoImage(base64);
@@ -40,12 +40,18 @@ export class ImageLoaderService {
             id: ImageDBService.getIdByUrl(url),
             blobUrl: url,
             base64: base64,
-            filename: file.name,
+            filename: (file as File).name || 'image.png',
             filesize: filesize,
             height: image.height.toString(),
             width: image.width.toString(),
             aspectRatio: aspectRatio,
         };
+    }
+
+    public async loadImageFromUrl(url: string): Promise<ImageDataModel> {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        return await this.loadImageFromFile(blob);
     }
 
     private gcd(a: number, b: number): number {

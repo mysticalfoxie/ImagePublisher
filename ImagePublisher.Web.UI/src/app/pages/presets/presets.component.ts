@@ -2,6 +2,7 @@ import {Component, ViewEncapsulation} from "@angular/core";
 import {filter, from, Subject, switchMap} from "rxjs";
 import {ConfirmService} from "../../modules/confirm/confirm.service";
 import {PresetsService} from "./presets.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-presets-component',
@@ -14,16 +15,18 @@ export class PresetsComponent {
     constructor (
         public service: PresetsService,
         private _confirmService: ConfirmService,
+        private _router: Router
     ) {
         this.subscribeDelete();
+        this.subscribeEdit();
         this.service.loadPresets();
     }
 
     public displayedColumns: string[] = [ 'image', 'title', 'description', 'tags', 'timestamp', 'actions' ];
 
-    public edit$ = new Subject<number>();
-    public delete$ = new Subject<number>();
-    public upload$ = new Subject<number>();
+    public edit$ = new Subject<string>();
+    public delete$ = new Subject<string>();
+    public upload$ = new Subject<string>();
 
     public sanitizeUTCDate(dateString: string) {
         const date = new Date(dateString);
@@ -45,11 +48,23 @@ export class PresetsComponent {
                 switchMap(() => from(this._confirmService.confirm())),
                 filter(x => !!x))
             .subscribe({
-                next: () => console.log('debug'),
+                next: () => {},
                 error: err => {
                     console.error(err);
                     this.subscribeDelete();
                 }
-            })
+            });
+    }
+
+    public subscribeEdit(): void {
+        this.edit$
+            .pipe(switchMap(x => from(this._router.navigate(['/', 'presets', x]))))
+            .subscribe({
+                next: () => {},
+                error: err => {
+                    console.error(err);
+                    this.subscribeEdit();
+                }
+            });
     }
 }

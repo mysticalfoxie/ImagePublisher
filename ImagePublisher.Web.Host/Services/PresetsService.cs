@@ -33,11 +33,46 @@ public class PresetsService : IService
         return metadata;
     }
 
+    public void SetImageUrls(PresetModel model, HttpRequest request)
+    {
+        if (model.General.UseHDLDImages)
+        {
+            model.General.HDImage = $"{request.GetDisplayUrl()}/hd-image";
+            model.General.LDImage = $"{request.GetDisplayUrl()}/ld-image";
+        }
+        else
+        {
+            model.General.Image = $"{request.GetDisplayUrl()}/image";
+        }
+    }
+
+    public bool FindPresetFileById(Guid id, out FileInfo presetFile, out IActionResult error)
+    {
+        var directory = _presetsFolder.GetDirectories().FirstOrDefault(x => x.Name == id.ToString());
+        if (directory is null)
+        {
+            error = new NotFoundObjectResult($"There is no preset with id of \"{id}\".");
+            presetFile = null;
+            return false;
+        }
+
+        var file = directory.GetFiles().First(x => x.Name == "preset.pd");
+        presetFile = file;
+        error = null;
+        return true;
+    }
+
+    public static async Task<PresetModel> LoadPresetFromFile(FileInfo file)
+    {
+        var json = await File.ReadAllTextAsync(file.FullName);
+        return JsonConvert.DeserializeObject<PresetModel>(json);
+    }
+
     private static PresetMetaDataModel CreateMetaData(PresetModel model, HttpRequest request)
     {
         return new PresetMetaDataModel
         {
-            Id = model.Id,
+            Id = model.Id.GetValueOrDefault(),
             Title = model.General.Title,
             Description = model.General.Description,
             Tags = model.General.Tags.Split(", ").Length,
@@ -65,6 +100,37 @@ public class PresetsService : IService
         }
         else
         {
+            tasks.AddRange(await ReadImageAndGetSavingTasks("image", form.Image, directory));
+        }
+
+        return tasks;
+    }
+    
+    private static async Task<IEnumerable<Task>> GetPresetUpdateTasks(
+        PresetModel data, 
+        PresetMetaDataModel metadata, 
+        PresetFormData form,
+        DirectoryInfo directory)
+    {
+        directory.GetFiles().FirstOrDefault(x => x.Name == "preset.pd")?.Delete();
+        directory.GetFiles().FirstOrDefault(x => x.Name == "preset.pmd")?.Delete();
+        
+        var tasks = new List<Task>
+        {
+            CreatePresetDataFile(data, directory),
+            CreatePresetMetaDataFile(metadata, directory)
+        };
+        
+        if (data.General.UseHDLDImages)
+        {
+            directory.GetFiles().FirstOrDefault(x => x.Name.StartsWith("image"))?.Delete();
+            tasks.AddRange(await ReadImageAndGetSavingTasks("hd_image", form.HDImage, directory));
+            tasks.AddRange(await ReadImageAndGetSavingTasks("ld_image", form.LDImage, directory));
+        }
+        else
+        {
+            directory.GetFiles().FirstOrDefault(x => x.Name.StartsWith("hd_image"))?.Delete();
+            directory.GetFiles().FirstOrDefault(x => x.Name.StartsWith("ld_image"))?.Delete();
             tasks.AddRange(await ReadImageAndGetSavingTasks("image", form.Image, directory));
         }
 
@@ -151,6 +217,11 @@ public class PresetsService : IService
         return this.TryOpenFileStream(id, "hd_image.png", out stream, out error);
     }
 
+    public bool TryOpenImageStream(Guid id, out FileStream stream, out IActionResult error)
+    {
+        return this.TryOpenFileStream(id, "image.png", out stream, out error);
+    }
+
     public bool TryOpenLDImageStream(Guid id, out FileStream stream, out IActionResult error)
     {
         return this.TryOpenFileStream(id, "ld_image.png", out stream, out error);
@@ -188,5 +259,15 @@ public class PresetsService : IService
             .AsParallel() // 🌟 Multi Threading ✨ <3
             .JsonConvertTo<PresetMetaDataModel>(ignoreErrors: true)
             .ToArray();
+    }
+
+    public async Task<PresetMetaDataModel> UpdatePreset(PresetFormData form, PresetModel data, FileInfo presetFile, HttpRequest request)
+    {
+        var metadata = CreateMetaData(data, request);
+        var directory = presetFile.Directory;
+        var tasks = await GetPresetUpdateTasks(data, metadata, form, directory); // ✨ Multi-Threading UwU ✨
+        await Task.WhenAll(tasks);
+        
+        return metadata;
     }
 }

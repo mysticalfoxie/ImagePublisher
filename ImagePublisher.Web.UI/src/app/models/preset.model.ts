@@ -5,6 +5,7 @@ import {PTEditorModel} from "./pt-editor.model";
 import {GeneralEditorModel} from "./general-editor.model";
 
 export interface PresetModel {
+    id: string,
     general: GeneralEditorModel,
     // noinspection SpellCheckingInspection
     deviantart: DAEditorModel,
