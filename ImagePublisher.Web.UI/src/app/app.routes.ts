@@ -12,9 +12,5 @@ export const AppRoutes: Routes = [
     {
         path: 'settings',
         loadChildren: () => import('./pages/settings/settings.module').then(x => x.SettingsModule)
-    },
-    {
-        path: '**',
-        redirectTo: 'presets'
     }
 ]

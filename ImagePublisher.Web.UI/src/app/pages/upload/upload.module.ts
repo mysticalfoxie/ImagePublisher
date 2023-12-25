@@ -12,6 +12,8 @@ import {SelectComponent} from "./components/select/select.component";
 import {ActionBarService} from "./action-bar.service";
 import {UploadDataService} from "./upload-data.service";
 import {PublishComponent} from "./components/publish/publish.component";
+import {AppComponentsModule} from "../../modules/components.module";
+import {MaterialModule} from "../../modules/material.module";
 
 @NgModule({
     declarations: [
@@ -22,8 +24,8 @@ import {PublishComponent} from "./components/publish/publish.component";
     ],
     imports: [
         UploadRoutingModule,
-        MatButtonModule,
-        MatIconModule,
+        AppComponentsModule,
+        MaterialModule,
         CommonModule,
     ],
     providers: [

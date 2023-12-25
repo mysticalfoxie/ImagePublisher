@@ -1,0 +1,21 @@
+:host {
+    display: flex;
+    padding: 8px 24px;
+    gap: 16px;
+
+    mat-icon.not-started {
+        color: #404040;
+    }
+
+    mat-icon.loading {
+        color: hsl(60, 50%, 50%);
+    }
+
+    mat-icon.started {
+        color: hsl(120, 50%, 50%);
+    }
+
+    mat-icon.faulted {
+        color: hsl(0, 50%, 50%);
+    }
+}

@@ -29,6 +29,12 @@ export class ActionBarService {
         this.setDisabledState(false);
     }
 
+    public setSubject(value: string): void {
+        setTimeout(() => {
+            this.subject$.next(value);
+        });
+    }
+
     private setDisabledState(state: boolean) {
         switch (this.buttons$.value) {
             case UploadButtons.SelectButton:

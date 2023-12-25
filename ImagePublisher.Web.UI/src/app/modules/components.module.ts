@@ -5,24 +5,26 @@ import {CommonModule} from "@angular/common";
 import {MaterialModule} from "./material.module";
 import {LabelInputComponent} from "../components/label-input/label-input.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {StatusItemComponent} from "../components/status-item/status-item.component";
 
 @NgModule({
     declarations: [
         StatusComponent,
         ImageInputComponent,
-        LabelInputComponent
+        LabelInputComponent,
+        StatusItemComponent
     ],
     imports: [
         CommonModule,
         MaterialModule,
         FormsModule,
         ReactiveFormsModule,
-
     ],
     exports: [
         StatusComponent,
         ImageInputComponent,
-        LabelInputComponent
+        LabelInputComponent,
+        StatusItemComponent
     ]
 })
 export class AppComponentsModule {

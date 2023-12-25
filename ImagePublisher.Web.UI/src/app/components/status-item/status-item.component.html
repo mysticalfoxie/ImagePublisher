@@ -1,0 +1,7 @@
+<ng-container [ngSwitch]="status$ | async">
+    <mat-icon class="not-started" *ngSwitchCase="Status.NotStarted">hide_source</mat-icon>
+    <mat-icon class="loading" *ngSwitchCase="Status.Loading">change_circle</mat-icon>
+    <mat-icon class="started" *ngSwitchCase="Status.Started">check_circle</mat-icon>
+    <mat-icon class="faulted" *ngSwitchCase="Status.Faulted">cancel</mat-icon>
+</ng-container>
+<ng-content></ng-content>

@@ -47,6 +47,8 @@ public static class StartupExtension
     public static void AddStaticAssets(this WebApplication app)
     {
         var directory = new DirectoryInfo("wwwroot/assets");
+        if (!directory.Exists) directory.Create();
+        
         var provider = new PhysicalFileProvider(directory.FullName);
         app.UseStaticFiles(new StaticFileOptions
         {
